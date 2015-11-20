@@ -1,0 +1,18 @@
+<resources>
+    <style name="AppTheme" parent="AppBaseTheme"/>
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_yellow_500</item>
+        <item name="colorPrimaryDark">@color/md_yellow_700</item>
+        <item name="colorAccent">@color/md_red_200</item>
+    </style>
+
+    <style name="Theme.DesignDemo" parent="Theme.DesignDemo.Base"/>
+    <style name="Theme.DesignDemo.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_red_500</item>
+        <item name="colorPrimaryDark">@color/md_red_700</item>
+        <item name="colorAccent">@color/md_red_A200</item>
+        <item name="android:windowBackground">@color/md_blue_200</item>
+    </style>
+
+</resources>

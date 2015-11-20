@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
+        <item
+            android:id="@+id/navigation_item_1"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/menu_item_1"
+            app:itemTextColor="#ff0000"
+            android:checkable="true"
+            />
+        <item
+            android:id="@+id/navigation_item_2"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/menu_item_2"
+            android:checkable="true"
+            />
+    </group>
+    <item
+        android:id="@+id/navigation_subheader"
+        android:title="设置">
+        <menu>
+            <item
+                android:id="@+id/navigation_sub_item_1"
+                android:icon="@mipmap/ic_launcher"
+                android:title="消息"
+                android:checkable="true"
+                />
+            <item
+                android:id="@+id/navigation_sub_item_2"
+                android:icon="@mipmap/ic_launcher"
+                android:title="退出"
+                android:checkable="true"
+                />
+        </menu>
+    </item>
+
+</menu>

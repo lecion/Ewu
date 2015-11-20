@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="192dp"
+                android:background="@drawable/banner"
+                android:fitsSystemWindows="true"
+                android:paddingLeft="16dp"
+                style="@style/ThemeOverlay.AppCompat.Dark"
+    >
+
+    <TextView
+        android:id="@+id/tv_signature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:text="啦啦啦啦啦~"
+        />
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv_signature"
+        android:layout_marginBottom="16dp"
+        android:text="Lecion"
+        />
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_above="@id/tv_username"
+        android:layout_marginBottom="16dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/avatar"
+        />
+</RelativeLayout>
