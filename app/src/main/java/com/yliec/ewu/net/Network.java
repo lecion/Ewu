@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 /**
  * Created by Lecion on 11/30/15.
@@ -19,11 +20,7 @@ public class Network {
             .baseUrl(Api.BASE_URL)
             .client(getClient())
             .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    public static Retrofit authRetrofit = new Retrofit.Builder()
-            .baseUrl(Api.BASE_URL)
-            .client(getClient())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .build();
 
     private static OkHttpClient getClient() {
