@@ -1,6 +1,6 @@
 package com.yliec.ewu;
 
-import com.yliec.ewu.api.entity.element.RequestUser;
+import com.yliec.ewu.api.entity.element.AuthUser;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,9 +34,9 @@ public class NetworkTest {
 
     @Test
     public void testGetToken() {
-        RequestUser requestUser = new RequestUser("aaaaa", "aaaaaa");
+        AuthUser authUser = new AuthUser("aaaaa", "aaaaaa");
 
-        api.getToken(requestUser);
+        api.getToken(authUser);
     }
 
     @Test

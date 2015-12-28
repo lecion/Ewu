@@ -1,7 +1,7 @@
 package com.yliec.ewu.api;
 
 import com.yliec.ewu.api.entity.TokenEntity;
-import com.yliec.ewu.api.entity.element.RequestUser;
+import com.yliec.ewu.api.entity.element.AuthUser;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -12,5 +12,5 @@ import retrofit.http.POST;
  */
 public interface AuthApi {
     @POST("auth")
-    Call<TokenEntity> getToken(@Body RequestUser user);
+    Call<TokenEntity> getToken(@Body AuthUser user);
 }

@@ -4,10 +4,12 @@ import com.yliec.ewu.api.AuthApi;
 import com.yliec.ewu.api.UserApi;
 import com.yliec.ewu.api.entity.TokenEntity;
 import com.yliec.ewu.api.entity.UserEntity;
-import com.yliec.ewu.api.entity.element.RequestUser;
+import com.yliec.ewu.api.entity.element.AuthUser;
 import com.yliec.ewu.model.bean.Goods;
 import com.yliec.ewu.net.Api;
 import com.yliec.ewu.net.Network;
+
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +18,7 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.Observable;
 
 /**
  * Created by Lecion on 11/30/15.
@@ -78,6 +81,20 @@ public class ApiHub {
         }
     }
 
+    @Test
+    public void testGetUserInfoRx() throws Exception {
+        this.getUserInfoRx("aaaa");
+    }
+
+    public void getUserInfoRx(String name) {
+        UserApi userApi = Network.retrofit.create(UserApi.class);
+        Observable<UserEntity.AUser> observable = userApi.getUserInfoRx(name);
+        observable.subscribe(aUser -> {
+                    System.out.println("getUserInfo by Rx way: " + aUser);
+                });
+
+    }
+
     public void getUsers() {
         UserApi userApi = Network.retrofit.create(UserApi.class);
         Call<UserEntity.Users> call = userApi.getUsers();
@@ -93,7 +110,7 @@ public class ApiHub {
     }
 
 
-    public void getToken(RequestUser user) {
+    public void getToken(AuthUser user) {
         AuthApi authApi = Network.retrofit.create(AuthApi.class);
         Call<TokenEntity> call = authApi.getToken(user);
         try {
