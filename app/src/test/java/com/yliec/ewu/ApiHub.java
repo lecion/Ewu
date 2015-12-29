@@ -39,7 +39,6 @@ public class ApiHub {
 
             @Override
             public void onFailure(Throwable t) {
-
             }
         });
 //            for (Goods goods : goodsList) {
@@ -65,7 +64,7 @@ public class ApiHub {
         call.enqueue(new Callback<UserEntity.AUser>() {
             @Override
             public void onResponse(Response<UserEntity.AUser> response, Retrofit retrofit) {
-                System.out.println(response.body());
+                System.out.println(response.body().getData().getMeta());
             }
 
             @Override

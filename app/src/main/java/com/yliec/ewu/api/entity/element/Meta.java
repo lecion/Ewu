@@ -29,4 +29,11 @@ public class Meta {
         this.createAt = createAt;
     }
 
+    @Override
+    public String toString() {
+        return "Meta{" +
+                "updateAt='" + updateAt + '\'' +
+                ", createAt='" + createAt + '\'' +
+                '}';
+    }
 }

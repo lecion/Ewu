@@ -38,3 +38,5 @@ build
 *.ipr
 *~
 *.swp
+.gradletasknamecache
+易物api.md
