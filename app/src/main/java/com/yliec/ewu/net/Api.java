@@ -1,6 +1,6 @@
 package com.yliec.ewu.net;
 
-import com.yliec.ewu.model.bean.Goods;
+import com.yliec.ewu.model.Goods;
 
 import java.util.List;
 
@@ -12,8 +12,6 @@ import retrofit.http.Path;
  * Created by Lecion on 11/30/15.
  */
 public interface Api {
-    String KEY_APPID = "X-Bmob-Application-Id";
-    String KEY_REST = "X-Bmob-REST-API-Key";
     String VAL_APPID = "1018e36c7e246b78d2fd9d6ddfe63269";
     String VAL_REST = "8d1f934037f118c2af2b43d211415491";
 

@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/md_white_1000"
         android:text="啦啦啦啦啦~"
         />
 
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/tv_signature"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/md_white_1000"
         android:text="Lecion"
         />
 

@@ -3,7 +3,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <group>
         <item
-            android:id="@+id/navigation_item_1"
+            android:id="@+id/main"
             android:icon="@mipmap/ic_launcher"
             android:title="@string/menu_item_1"
             app:itemTextColor="#ff0000"

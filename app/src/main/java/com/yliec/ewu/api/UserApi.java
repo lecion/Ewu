@@ -11,7 +11,7 @@ import rx.Observable;
  * Created by Lecion on 12/23/15.
  */
 public interface UserApi {
-    @GET("users/{username}")
+    @GET("user/{username}")
     Call<UserEntity.AUser> getUserInfo(@Path("username") String username);
 
     @GET("users")

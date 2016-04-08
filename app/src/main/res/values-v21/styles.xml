@@ -1,6 +1,10 @@
 <resources>>
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">?colorPrimaryDark</item>
+        <!--使侧边栏显示在statusbar之下-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--<item name="android:navigationBarColor">@android:color/transparent</item>-->
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 </resources>

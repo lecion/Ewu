@@ -54,7 +54,7 @@ public class Network {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request().newBuilder().addHeader("x-access-token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNTY3OTJkMThmZGVlMGFlNzBkNDM4YTAwIiwiaWF0IjoxNDUwODY5NDMyLCJleHAiOjE0NTM0NjE0MzJ9.c9acvH8LHi0HT9u8SGrTNzvNUun8-5ISVVNCrLIynQs").build();
+            Request request = chain.request().newBuilder().addHeader("x-access-token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNTcwNjMwYTdiNTdjYzY0ZTYwNTMwZDM2IiwiaWF0IjoxNDYwMDIzNDkxLCJleHAiOjE0NjI2MTU0OTF9.HyhZEBiJXuGkUe9pf3Ov3Z_TMKKWd6RkPXAkpMp0jKM").build();
             return chain.proceed(request);
         }
     }

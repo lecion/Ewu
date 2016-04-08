@@ -1,4 +1,4 @@
-package com.yliec.ewu.model.bean;
+package com.yliec.ewu.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

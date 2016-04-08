@@ -27,11 +27,10 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
     compile project(':lsword')
-    compile files('libs/BmobSDK_V3.4.5_1111.jar')
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'io.reactivex:rxjava:1.0.16'
     compile 'io.reactivex:rxandroid:1.0.1'
@@ -40,7 +39,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit-adapters:2.0.0-beta2'
     compile 'com.squareup.retrofit:retrofit-converters:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
-    compile 'info.android15.nucleus:nucleus:2.0.4'
-    compile 'info.android15.nucleus:nucleus-support-v7:2.0.4'
+    compile 'info.android15.nucleus:nucleus:2.0.5'
+    compile 'info.android15.nucleus:nucleus-support-v7:2.0.5'
     compile 'com.jakewharton:butterknife:7.0.1'
 }

@@ -5,11 +5,10 @@ import com.yliec.ewu.api.UserApi;
 import com.yliec.ewu.api.entity.TokenEntity;
 import com.yliec.ewu.api.entity.UserEntity;
 import com.yliec.ewu.api.entity.element.AuthUser;
-import com.yliec.ewu.model.bean.Goods;
+import com.yliec.ewu.api.entity.element.User;
+import com.yliec.ewu.model.Goods;
 import com.yliec.ewu.net.Api;
 import com.yliec.ewu.net.Network;
-
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
@@ -80,10 +79,7 @@ public class ApiHub {
         }
     }
 
-    @Test
-    public void testGetUserInfoRx() throws Exception {
-        this.getUserInfoRx("aaaa");
-    }
+
 
     public void getUserInfoRx(String name) {
         UserApi userApi = Network.retrofit.create(UserApi.class);
@@ -101,8 +97,10 @@ public class ApiHub {
             Response response = call.execute();
             call.cancel();
             UserEntity.Users users = (UserEntity.Users) response.body();
+            for (User user : users.getData()) {
+                System.out.println(user.toString());
+            }
 
-            System.out.println(users.getData().size());
         } catch (IOException e) {
             e.printStackTrace();
         }

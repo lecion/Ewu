@@ -8,7 +8,7 @@ public class User {
 
     @SerializedName("_id")
     @Expose
-    private String Id;
+    private String id;
     @SerializedName("phone")
     @Expose
     private String phone;
@@ -23,11 +23,11 @@ public class User {
     private Meta meta;
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String Id) {
-        this.Id = Id;
+        this.id = Id;
     }
 
     public String getPhone() {
@@ -65,7 +65,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "Id='" + Id + '\'' +
+                "id='" + id + '\'' +
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", name='" + name + '\'' +

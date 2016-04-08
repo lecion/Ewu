@@ -34,7 +34,7 @@ public class NetworkTest {
 
     @Test
     public void testGetToken() {
-        AuthUser authUser = new AuthUser("aaaaa", "aaaaaa");
+        AuthUser authUser = new AuthUser("bubble", "123456");
 
         api.getToken(authUser);
     }
@@ -42,5 +42,10 @@ public class NetworkTest {
     @Test
     public void testGetUsers() {
         api.getUsers();
+    }
+
+    @Test
+    public void testGetUserInfoRx() throws Exception {
+        api.getUserInfoRx("lecion");
     }
 }

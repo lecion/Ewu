@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UserEntity {
 
-    public class Users extends BaseEntity<List<Users>> {}
+    public class Users extends BaseEntity<List<User>> {}
 
     public class AUser extends BaseEntity<User>{}
 }
