@@ -14,16 +14,25 @@ import android.widget.FrameLayout;
 
 import com.yliec.lsword.compat.StatusBarCompat;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
+    @Bind(R.id.drawer)
+    DrawerLayout mDrawerLayout;
+    @Bind(R.id.nv_menu)
+    NavigationView mNavigationView;
+    @Bind(R.id.content)
+    FrameLayout mContainer;
     private MenuItem mPrevMenuItem;
-    private FrameLayout mContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -35,21 +44,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         StatusBarCompat.compat(this);
 
         //Drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-
         if (mDrawerLayout != null) {
             int color = getResources().getColor(R.color.primary_dark);
             mDrawerLayout.setStatusBarBackgroundColor(color);
         }
 
         //NavigationView
-        mNavigationView = (NavigationView) findViewById(R.id.nv_menu);
         if (mNavigationView != null) {
             mNavigationView.setNavigationItemSelectedListener(this);
         }
-
-        //Container
-        mContainer = (FrameLayout) findViewById(R.id.content);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        if (fab != null) {
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.main:
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
-                MainActivityFragment fragment = new MainActivityFragment();
+                MainFragment fragment = new MainFragment();
                 transaction.replace(mContainer.getId(),  fragment, "main");
                 transaction.commit();
                 fm.executePendingTransactions();
