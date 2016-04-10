@@ -1,4 +1,4 @@
-package com.yliec.ewu;
+package com.yliec.ewu.module.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.yliec.ewu.R;
 import com.yliec.lsword.compat.util.L;
 
 import java.util.ArrayList;

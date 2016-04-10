@@ -1,4 +1,4 @@
-package com.yliec.ewu;
+package com.yliec.ewu.module.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -6,18 +6,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-import com.yliec.lsword.compat.StatusBarCompat;
+import com.yliec.ewu.R;
+import com.yliec.ewu.app.base.BaseActivity;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     @Bind(R.id.drawer)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.nv_menu)
@@ -29,19 +27,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        ButterKnife.bind(this);
-
-        //Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.md_white_1000));
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        StatusBarCompat.compat(this);
 
         //Drawer
         if (mDrawerLayout != null) {
@@ -54,13 +39,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mNavigationView.setNavigationItemSelectedListener(this);
         }
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        if (fab != null) {
-//            fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", view1 -> {
-//                    }).show()
-//            );
-//        }
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void injectPrensenter() {
+
     }
 
     @Override
@@ -97,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.replace(mContainer.getId(),  fragment, "main");
                 transaction.commit();
                 fm.executePendingTransactions();
-
                 break;
         }
 
