@@ -2,7 +2,6 @@ package com.yliec.ewu.module.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yliec.ewu.R;
+import com.yliec.ewu.app.base.BaseFragment;
 import com.yliec.lsword.compat.util.L;
 
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -27,7 +26,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.refresh_layout)
     SwipeRefreshLayout mRefreshLayout;
     @Bind(R.id.rv_main)
@@ -53,10 +52,25 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
+    protected void injectPresenter() {
+
+    }
+
+    @Override
+    protected String getTitle() {
+        return "测试";
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, v);
+
+        return inflater.inflate(R.layout.fragment_main, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter = new MainAdapter());
@@ -109,7 +123,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
         mRefreshLayout.setOnRefreshListener(this);
-        return v;
     }
 
     @Override
