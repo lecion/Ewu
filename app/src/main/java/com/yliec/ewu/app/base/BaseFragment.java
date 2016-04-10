@@ -44,6 +44,12 @@ public abstract class BaseFragment<PresenterType extends Presenter> extends Nucl
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     protected abstract void injectPresenter();
 
     protected abstract String getTitle();

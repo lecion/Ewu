@@ -64,5 +64,9 @@ public abstract class BaseActivity<PresenterType extends Presenter> extends Nucl
 
     protected abstract void injectPrensenter();
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 }
