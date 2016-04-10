@@ -19,7 +19,7 @@ import nucleus.view.NucleusAppCompatActivity;
  * Created by Lecion on 11/18/15.
  */
 public abstract class BaseActivity<PresenterType extends Presenter> extends NucleusAppCompatActivity<PresenterType> {
-
+    protected final String TAG = getClass().getSimpleName();
     @Nullable
     @Bind(R.id.toolbar)
     Toolbar mToolbar;

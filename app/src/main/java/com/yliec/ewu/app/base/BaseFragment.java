@@ -18,7 +18,7 @@ import nucleus.view.NucleusSupportFragment;
  * Created by Lecion on 4/10/16.
  */
 public abstract class BaseFragment<PresenterType extends Presenter> extends NucleusSupportFragment<PresenterType> {
-
+    protected final String TAG = getClass().getSimpleName();
     @Nullable
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
