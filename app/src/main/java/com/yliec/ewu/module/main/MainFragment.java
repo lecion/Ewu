@@ -2,7 +2,6 @@ package com.yliec.ewu.module.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.yliec.ewu.R;
 import com.yliec.ewu.app.base.BaseFragment;
 import com.yliec.lsword.compat.util.L;
@@ -26,9 +27,9 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseFragment {
     @Bind(R.id.refresh_layout)
-    SwipeRefreshLayout mRefreshLayout;
+    MaterialRefreshLayout mRefreshLayout;
     @Bind(R.id.rv_main)
     RecyclerView mRecyclerView;
     private MainAdapter mAdapter;
@@ -64,7 +65,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -105,16 +106,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             }
 
             private void onLoadMore(int page) {
-                Observable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                        .map(aLong -> {
-                            ArrayList<String> more = new ArrayList<String>();
-                            for (int i = 0; i < 10; i++) {
-                                more.add("第" + page + "页 loadmore " + i);
-                            }
-                            mDatas.addAll(more);
-                            mAdapter.notifyDataSetChanged();
-                            return null;
-                        }).subscribe();
+
             }
 
             @Override
@@ -122,18 +114,34 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-        mRefreshLayout.setOnRefreshListener(this);
-    }
+        mRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
 
-    @Override
-    public void onRefresh() {
-        Observable.timer(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                .map(aLong -> {
-                    mDatas.add(0, "item新数据");
-                    mRefreshLayout.setRefreshing(false);
-                    mAdapter.notifyDataSetChanged();
-                    return null;
-                }).subscribe();
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                Observable.timer(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                        .map(aLong -> {
+                            mDatas.add(0, "item新数据");
+                            mRefreshLayout.finishRefresh();
+                            mAdapter.notifyDataSetChanged();
+                            return null;
+                        }).subscribe();
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                Observable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                        .map(aLong -> {
+                            ArrayList<String> more = new ArrayList<String>();
+                            for (int i = 0; i < 10; i++) {
+                                more.add("第" + "页 loadmore " + i);
+                            }
+                            mDatas.addAll(more);
+                            mRefreshLayout.finishRefreshLoadMore();
+                            mAdapter.notifyDataSetChanged();
+                            return null;
+                        }).subscribe();
+            }
+        });
     }
 
     class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
