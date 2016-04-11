@@ -1,17 +1,16 @@
 package com.yliec.ewu;
 
 import com.yliec.ewu.api.AuthApi;
+import com.yliec.ewu.api.GoodsApi;
 import com.yliec.ewu.api.UserApi;
+import com.yliec.ewu.api.entity.GoodsEntity;
 import com.yliec.ewu.api.entity.TokenEntity;
 import com.yliec.ewu.api.entity.UserEntity;
 import com.yliec.ewu.api.entity.element.AuthUser;
 import com.yliec.ewu.api.entity.element.User;
-import com.yliec.ewu.model.Goods;
-import com.yliec.ewu.net.Api;
 import com.yliec.ewu.net.Network;
 
 import java.io.IOException;
-import java.util.List;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -24,37 +23,19 @@ import rx.Observable;
  */
 public class ApiHub {
     public void goodsList() {
-        Api.GoodsApi goodsApi = Network.retrofit.create(Api.GoodsApi.class);
-        Call<List<Goods>> call = goodsApi.getGoodsList();
-        call.enqueue(new Callback<List<Goods>>() {
-            @Override
-            public void onResponse(Response<List<Goods>> response, Retrofit retrofit) {
-                try {
-                    System.out.println(response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-            }
+        GoodsApi goodsApi = Network.retrofit.create(GoodsApi.class);
+        Observable<GoodsEntity.GoodsList> call = goodsApi.getGoodsList();
+        call.subscribe(goodsList -> {
+            System.out.println(goodsList.getData().toString());
         });
-//            for (Goods goods : goodsList) {
-//                System.out.println(goods.getName());
-//            }
-
     }
 
     public void getGoods(String id) {
-        Api.GoodsApi goodsApi = Network.retrofit.create(Api.GoodsApi.class);
-        Call<Goods> call = goodsApi.getGoods(id);
-        try {
-            Response response = call.execute();
-            System.out.println(response.code());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        GoodsApi goodsApi = Network.retrofit.create(GoodsApi.class);
+        Observable<GoodsEntity.AGoods> call = goodsApi.getGoods(id);
+        call.subscribe(aGoods -> {
+            System.out.println(aGoods.getData().toString());
+        });
     }
 
     public void getUserInfo(String name) {
@@ -80,13 +61,12 @@ public class ApiHub {
     }
 
 
-
     public void getUserInfoRx(String name) {
         UserApi userApi = Network.retrofit.create(UserApi.class);
         Observable<UserEntity.AUser> observable = userApi.getUserInfoRx(name);
         observable.subscribe(aUser -> {
-                    System.out.println("getUserInfo by Rx way: " + aUser);
-                });
+            System.out.println("getUserInfo by Rx way: " + aUser);
+        });
 
     }
 
