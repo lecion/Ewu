@@ -18,9 +18,6 @@ public class User {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("meta")
-    @Expose
-    private Meta meta;
 
     public String getId() {
         return id;
@@ -54,14 +51,6 @@ public class User {
         this.name = name;
     }
 
-    public Meta getMeta() {
-        return meta;
-    }
-
-    public void setMeta(Meta meta) {
-        this.meta = meta;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -69,7 +58,6 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", name='" + name + '\'' +
-                ", meta=" + meta +
                 '}';
     }
 }

@@ -135,7 +135,7 @@ public class MainFragment extends BaseFragment<MainPresenter> {
 
         @Override
         public void onBindViewHolder(MainHolder holder, int position) {
-            holder.tv.setText(mDatas.get(position).getName());
+            holder.tv.setText(mDatas.get(position).toString());
         }
 
         @Override

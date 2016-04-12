@@ -1,8 +1,10 @@
 package com.yliec.ewu.api.entity.element;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -14,13 +16,20 @@ public class Goods implements Parcelable {
 
     private String name;
 
+    @SerializedName("sale_price")
     private double price;
 
-    private String describe;
+    private String detail;
 
     private int userId;
 
-    private int typeId;
+    @SerializedName("seller")
+    @Expose
+    private User seller;
+
+    @SerializedName("category")
+    @Expose
+    private Category category;
 
     private int status;
 
@@ -52,12 +61,12 @@ public class Goods implements Parcelable {
         this.price = price;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public int getUserId() {
@@ -68,12 +77,12 @@ public class Goods implements Parcelable {
         this.userId = userId;
     }
 
-    public int getTypeId() {
-        return typeId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public int getStatus() {
@@ -111,9 +120,11 @@ public class Goods implements Parcelable {
         dest.writeString(this.objectId);
         dest.writeString(this.name);
         dest.writeDouble(this.price);
-        dest.writeString(this.describe);
+        dest.writeString(this.detail);
         dest.writeInt(this.userId);
-        dest.writeInt(this.typeId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            dest.writeTypedObject(this.category, 0);
+        }
         dest.writeInt(this.status);
         dest.writeString(this.createdAt);
         dest.writeString(this.updatedAt);
@@ -126,9 +137,11 @@ public class Goods implements Parcelable {
         this.objectId = in.readString();
         this.name = in.readString();
         this.price = in.readDouble();
-        this.describe = in.readString();
+        this.detail = in.readString();
         this.userId = in.readInt();
-        this.typeId = in.readInt();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.category = in.readTypedObject(Category.CREATOR);
+        }
         this.status = in.readInt();
         this.createdAt = in.readString();
         this.updatedAt = in.readString();
@@ -143,4 +156,28 @@ public class Goods implements Parcelable {
             return new Goods[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "objectId='" + objectId + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", detail='" + detail + '\'' +
+                ", userId=" + userId +
+                ", seller=" + seller +
+                ", category=" + category +
+                ", status=" + status +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                '}';
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
 }
