@@ -28,7 +28,7 @@ public class MainPresenter extends RxPresenter<MainFragment> {
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
         L.d(TAG, "onCreate");
-        restartableLatestCache(REQUEST_ID, () -> mGoodsModel.getGoodsList()
+        restartableLatestCache(REQUEST_ID, () -> mGoodsModel.getGoodsListByPop(pageIndex)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(goodsList -> goodsList.getData())
                         .compose(new SchedulerTransformer<>()),
