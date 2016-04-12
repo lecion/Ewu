@@ -1,4 +1,4 @@
-package com.yliec.ewu.di;
+package com.yliec.ewu.di.module;
 
 import com.yliec.ewu.model.GoodsModel;
 

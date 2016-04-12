@@ -2,12 +2,12 @@ package com.yliec.ewu.app;
 
 import android.app.Application;
 
-import com.yliec.ewu.di.ApiComponent;
-import com.yliec.ewu.di.ApiModule;
-import com.yliec.ewu.di.AppComponent;
-import com.yliec.ewu.di.AppModule;
-import com.yliec.ewu.di.DaggerApiComponent;
-import com.yliec.ewu.di.DaggerAppComponent;
+import com.yliec.ewu.di.component.ApiComponent;
+import com.yliec.ewu.di.component.AppComponent;
+import com.yliec.ewu.di.component.DaggerApiComponent;
+import com.yliec.ewu.di.component.DaggerAppComponent;
+import com.yliec.ewu.di.module.ApiModule;
+import com.yliec.ewu.di.module.AppModule;
 
 /**
  * Created by Lecion on 4/11/16.

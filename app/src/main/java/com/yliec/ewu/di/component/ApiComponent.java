@@ -1,5 +1,6 @@
-package com.yliec.ewu.di;
+package com.yliec.ewu.di.component;
 
+import com.yliec.ewu.di.module.ApiModule;
 import com.yliec.ewu.module.main.MainPresenter;
 
 import dagger.Component;

@@ -1,4 +1,6 @@
-package com.yliec.ewu.di;
+package com.yliec.ewu.di.component;
+
+import com.yliec.ewu.di.module.AppModule;
 
 import dagger.Component;
 

@@ -12,28 +12,28 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.yliec.ewu.R;
+import com.yliec.ewu.api.entity.element.Goods;
 import com.yliec.ewu.app.base.BaseFragment;
 import com.yliec.lsword.compat.util.L;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import nucleus.factory.RequiresPresenter;
 
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends BaseFragment {
+@RequiresPresenter(MainPresenter.class)
+public class MainFragment extends BaseFragment<MainPresenter> {
     @Bind(R.id.refresh_layout)
     MaterialRefreshLayout mRefreshLayout;
     @Bind(R.id.rv_main)
     RecyclerView mRecyclerView;
     private MainAdapter mAdapter;
-    private List<String> mDatas;
+    private List<Goods> mDatas;
     private LinearLayoutManager mLayoutManager;
 
     public MainFragment() {
@@ -42,9 +42,6 @@ public class MainFragment extends BaseFragment {
 
     private void initData() {
         mDatas = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            mDatas.add("item " + i);
-        }
     }
 
     @Override
@@ -54,7 +51,17 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected void injectPresenter() {
-
+//        final PresenterFactory<MainPresenter> presenterFactory = super.getPresenterFactory();
+//        setPresenterFactory(new PresenterFactory<MainPresenter>() {
+//            @Override
+//            public MainPresenter createPresenter() {
+//                L.d(TAG, "presenterFactory " + presenterFactory);
+//                MainPresenter presenter = presenterFactory.createPresenter();
+//                getApiComponent().inject(presenter);
+//                return presenter;
+//            }
+//        });
+        getApiComponent().inject(getPresenter());
     }
 
     @Override
@@ -65,7 +72,6 @@ public class MainFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -75,73 +81,31 @@ public class MainFragment extends BaseFragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter = new MainAdapter());
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            private int mCurrentPage = 1;
-            private boolean mLoading = true;
-            private int mPreviousTotal = 0;
-            private int lastVisible, totalCount;
-
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                totalCount = mLayoutManager.getItemCount();
-                lastVisible = mLayoutManager.findLastVisibleItemPosition();
-                L.d("totalCount " + totalCount + " lastVisible " + lastVisible);
-
-                if (mLoading) {
-                    if (totalCount > mPreviousTotal) {
-                        mLoading = false;
-                        mPreviousTotal = totalCount;
-                    }
-                }
-
-                if (!mLoading && (lastVisible >= totalCount - 1)) {
-                    mCurrentPage++;
-                    onLoadMore(mCurrentPage);
-                    mLoading = true;
-                }
-
-            }
-
-            private void onLoadMore(int page) {
-
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
         mRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
-
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
-                Observable.timer(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                        .map(aLong -> {
-                            mDatas.add(0, "item新数据");
-                            mRefreshLayout.finishRefresh();
-                            mAdapter.notifyDataSetChanged();
-                            return null;
-                        }).subscribe();
+                getPresenter().refresh();
             }
 
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
-                Observable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                        .map(aLong -> {
-                            ArrayList<String> more = new ArrayList<String>();
-                            for (int i = 0; i < 10; i++) {
-                                more.add("第" + "页 loadmore " + i);
-                            }
-                            mDatas.addAll(more);
-                            mRefreshLayout.finishRefreshLoadMore();
-                            mAdapter.notifyDataSetChanged();
-                            return null;
-                        }).subscribe();
+                getPresenter().loadMore();
             }
         });
+    }
+
+    public void onChangeItems(List<Goods> goodsList, int pageIndex) {
+        if (pageIndex == 1) {
+            mDatas.clear();
+            mDatas.addAll(goodsList);
+            mAdapter.notifyDataSetChanged();
+            mRefreshLayout.finishRefresh();
+        } else {
+            mDatas.addAll(goodsList);
+            mAdapter.notifyDataSetChanged();
+            mRefreshLayout.finishRefreshLoadMore();
+        }
+        L.d(TAG, "onChangeItems");
     }
 
     class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
@@ -152,7 +116,7 @@ public class MainFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(MainHolder holder, int position) {
-            holder.tv.setText(mDatas.get(position));
+            holder.tv.setText(mDatas.get(position).getName());
         }
 
         @Override

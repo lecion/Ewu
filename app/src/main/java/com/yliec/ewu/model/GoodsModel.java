@@ -15,11 +15,11 @@ public class GoodsModel extends BaseModel<GoodsApi, GoodsModel> {
         return GoodsApi.class;
     }
 
-    Observable<GoodsEntity.GoodsList> getGoodsList() {
+    public Observable<GoodsEntity.GoodsList> getGoodsList() {
         return getService().getGoodsList();
     }
 
-    Observable<GoodsEntity.AGoods> getGoodsById(String id) {
+    public Observable<GoodsEntity.AGoods> getGoodsById(String id) {
         return getService().getGoods(id);
     }
 }

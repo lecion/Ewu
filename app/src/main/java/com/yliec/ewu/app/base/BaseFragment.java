@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yliec.ewu.R;
+import com.yliec.ewu.app.App;
+import com.yliec.ewu.di.component.ApiComponent;
 import com.yliec.lsword.compat.util.L;
 
 import butterknife.Bind;
@@ -101,9 +103,14 @@ public abstract class BaseFragment<PresenterType extends Presenter> extends Nucl
         L.d(TAG, "onDestroyView");
     }
 
-    protected abstract void injectPresenter();
+    protected void injectPresenter() {
+    }
 
     protected abstract String getTitle();
+
+    protected ApiComponent getApiComponent() {
+        return ((App) (getActivity().getApplication())).getApiComponent();
+    }
 
 
 }
