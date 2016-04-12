@@ -98,10 +98,13 @@ public class MainFragment extends BaseFragment<MainPresenter> {
                 getPresenter().loadMore(sortType);
             }
         });
-        loadData();
+        lazyLoad();
     }
 
-    private void loadData() {
+    /**
+     * 等待视图创建完毕后加载数据
+     */
+    private void lazyLoad() {
         mRefreshLayout.autoRefresh();
     }
 
