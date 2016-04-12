@@ -16,7 +16,7 @@ public interface GoodsApi {
     Observable<GoodsEntity.GoodsList> getGoodsList();
 
     @GET("Goods")
-    Observable<GoodsEntity.GoodsList> getGoodsList(@Query("page") int page, @Query("limit") int limit, @Query("sortType") int sortType, @Query("category") int category);
+    Observable<GoodsEntity.GoodsList> getGoodsList(@Query("page") int page, @Query("limit") int limit, @Query("sort") int sortType, @Query("category") int category);
 
     @GET("Goods/{goods}")
     Observable<GoodsEntity.AGoods> getGoods(@Path("goods") String goodsId);

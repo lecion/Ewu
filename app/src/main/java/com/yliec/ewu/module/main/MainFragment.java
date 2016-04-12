@@ -6,6 +6,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -15,6 +18,7 @@ import com.cjj.MaterialRefreshListener;
 import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.Goods;
 import com.yliec.ewu.app.base.BaseFragment;
+import com.yliec.ewu.net.Api;
 import com.yliec.lsword.compat.util.L;
 
 import java.util.ArrayList;
@@ -38,6 +42,8 @@ public class MainFragment extends BaseFragment<MainPresenter> {
     private List<Goods> mDatas;
     private LinearLayoutManager mLayoutManager;
 
+    protected int sortType = Api.SORT_TYPE.POP;
+
     public MainFragment() {
         initData();
     }
@@ -49,6 +55,7 @@ public class MainFragment extends BaseFragment<MainPresenter> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -60,7 +67,6 @@ public class MainFragment extends BaseFragment<MainPresenter> {
             getApiComponent().inject(presenter);
             return presenter;
         });
-//        getApiComponent().inject(getPresenter());
     }
 
     @Override
@@ -83,15 +89,20 @@ public class MainFragment extends BaseFragment<MainPresenter> {
         mRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
-                getPresenter().refresh();
+                getPresenter().refresh(sortType);
                 mRefreshLayout.setLoadMore(true);
             }
 
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
-                getPresenter().loadMore();
+                getPresenter().loadMore(sortType);
             }
         });
+        loadData();
+    }
+
+    private void loadData() {
+        mRefreshLayout.autoRefresh();
     }
 
     public void onChangeItems(List<Goods> goodsList, int pageIndex) {
@@ -137,5 +148,28 @@ public class MainFragment extends BaseFragment<MainPresenter> {
                 tv = (TextView) itemView.findViewById(R.id.text);
             }
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.pop:
+                sortType = Api.SORT_TYPE.POP;
+                break;
+            case R.id.time:
+                sortType = Api.SORT_TYPE.TIME;
+                break;
+            case R.id.price:
+                sortType = Api.SORT_TYPE.PRICE;
+                break;
+        }
+        getPresenter().refresh(sortType);
+        return super.onOptionsItemSelected(item);
     }
 }
