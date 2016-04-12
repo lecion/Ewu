@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Goods implements Parcelable {
     @SerializedName("_id")
-    private String objectId;
+    private String id;
 
     private String name;
 
@@ -20,8 +20,6 @@ public class Goods implements Parcelable {
     private double price;
 
     private String detail;
-
-    private int userId;
 
     @SerializedName("seller")
     @Expose
@@ -37,12 +35,12 @@ public class Goods implements Parcelable {
 
     private String updatedAt;
 
-    public String getObjectId() {
-        return objectId;
+    public String getId() {
+        return id;
     }
 
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -67,14 +65,6 @@ public class Goods implements Parcelable {
 
     public void setDetail(String detail) {
         this.detail = detail;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public Category getCategory() {
@@ -117,11 +107,10 @@ public class Goods implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.objectId);
+        dest.writeString(this.id);
         dest.writeString(this.name);
         dest.writeDouble(this.price);
         dest.writeString(this.detail);
-        dest.writeInt(this.userId);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             dest.writeTypedObject(this.category, 0);
         }
@@ -134,11 +123,10 @@ public class Goods implements Parcelable {
     }
 
     protected Goods(Parcel in) {
-        this.objectId = in.readString();
+        this.id = in.readString();
         this.name = in.readString();
         this.price = in.readDouble();
         this.detail = in.readString();
-        this.userId = in.readInt();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.category = in.readTypedObject(Category.CREATOR);
         }
@@ -160,11 +148,10 @@ public class Goods implements Parcelable {
     @Override
     public String toString() {
         return "Goods{" +
-                "objectId='" + objectId + '\'' +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", detail='" + detail + '\'' +
-                ", userId=" + userId +
                 ", seller=" + seller +
                 ", category=" + category +
                 ", status=" + status +
