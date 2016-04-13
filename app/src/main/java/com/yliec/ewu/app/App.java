@@ -1,6 +1,8 @@
 package com.yliec.ewu.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.yliec.ewu.di.component.ApiComponent;
 import com.yliec.ewu.di.component.AppComponent;
@@ -35,5 +37,11 @@ public class App extends Application {
 
     public ApiComponent getApiComponent() {
         return mApiComponent;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

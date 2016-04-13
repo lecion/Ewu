@@ -5,12 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cjj.MaterialRefreshLayout;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
 
@@ -127,15 +130,35 @@ public class MainFragment extends BaseFragment<MainPresenter> {
         L.d(TAG, "onChangeItems");
     }
 
+    public void onNetError(Throwable throwable) {
+        mRefreshLayout.finishRefresh();
+        mRefreshLayout.finishRefreshLoadMore();
+        Snackbar.make(getView(), "网络错误，请检查网络连接", Snackbar.LENGTH_LONG).show();
+    }
+
     class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
         @Override
         public MainHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new MainHolder(LayoutInflater.from(getContext()).inflate(R.layout.item_main, parent, false));
+            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_fragment_main, parent, false);
+            return new MainHolder(itemView);
         }
 
         @Override
         public void onBindViewHolder(MainHolder holder, int position) {
-            holder.tv.setText(mDatas.get(position).toString());
+//            holder.mCardView
+            Goods goods = mDatas.get(position);
+
+            String userName;
+            try {
+                userName = TextUtils.isEmpty(goods.getUser().getName()) ? "匿名" : goods.getUser().getName();
+            } catch (NullPointerException e) {
+                userName = "匿名";
+            }
+
+
+            holder.tvUserName.setText(userName);
+            holder.tvPrice.setText("￥" + String.valueOf(goods.getPrice()));
+            holder.tvDetail.setText(goods.getDetail());
         }
 
         @Override
@@ -144,11 +167,20 @@ public class MainFragment extends BaseFragment<MainPresenter> {
         }
 
         class MainHolder extends RecyclerView.ViewHolder {
-            TextView tv;
+            @Bind(R.id.iv_avatar)
+            ImageView ivAvatar;
+            @Bind(R.id.tv_username)
+            TextView tvUserName;
+            @Bind(R.id.iv_goods)
+            ImageView ivGoods;
+            @Bind(R.id.tv_price)
+            TextView tvPrice;
+            @Bind(R.id.tv_detail)
+            TextView tvDetail;
 
             public MainHolder(View itemView) {
                 super(itemView);
-                tv = (TextView) itemView.findViewById(R.id.text);
+                ButterKnife.bind(this, itemView);
             }
         }
     }

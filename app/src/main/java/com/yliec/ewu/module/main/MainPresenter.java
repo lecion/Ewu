@@ -46,8 +46,10 @@ public class MainPresenter extends RxPresenter<MainFragment> {
                         .map(goodsList -> goodsList.getData())
                         .compose(new SchedulerTransformer<>()),
                 (mainFragment, goodsList) -> mainFragment.onChangeItems(goodsList, pageIndex),
-                (mainFragment, throwable) ->
-                        L.d(TAG, "err " + throwable.getMessage())
+                (mainFragment, throwable) -> {
+                    L.d(TAG, "err " + throwable.getMessage());
+                    mainFragment.onNetError(throwable);
+                }
         );
 
         restartableLatestCache(REQUEST_TIME_ID, () -> mGoodsModel.getGoodsListByTime(pageIndex)

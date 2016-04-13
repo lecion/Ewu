@@ -23,7 +23,7 @@ public class Goods implements Parcelable {
 
     @SerializedName("seller")
     @Expose
-    private User seller;
+    private User user;
 
     @SerializedName("category")
     @Expose
@@ -152,7 +152,7 @@ public class Goods implements Parcelable {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", detail='" + detail + '\'' +
-                ", seller=" + seller +
+                ", user=" + user +
                 ", category=" + category +
                 ", status=" + status +
                 ", createdAt='" + createdAt + '\'' +
@@ -160,11 +160,11 @@ public class Goods implements Parcelable {
                 '}';
     }
 
-    public User getSeller() {
-        return seller;
+    public User getUser() {
+        return user;
     }
 
-    public void setSeller(User seller) {
-        this.seller = seller;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
