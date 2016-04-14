@@ -44,7 +44,7 @@ public class ApiHub {
         call.enqueue(new Callback<UserEntity.AUser>() {
             @Override
             public void onResponse(Response<UserEntity.AUser> response, Retrofit retrofit) {
-                System.out.println(response.body().getData().getMeta());
+                System.out.println(response.body().getData());
             }
 
             @Override

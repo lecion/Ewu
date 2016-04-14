@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.yliec.ewu.di.component.ApiComponent;
 import com.yliec.ewu.di.component.AppComponent;
 import com.yliec.ewu.di.component.DaggerApiComponent;
@@ -21,7 +22,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Fresco.initialize(getApplicationContext());
         setupComponent();
     }
 

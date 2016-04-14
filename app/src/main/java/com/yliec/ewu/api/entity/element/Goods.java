@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by Lecion on 11/30/15.
  */
@@ -28,6 +30,9 @@ public class Goods implements Parcelable {
     @SerializedName("category")
     @Expose
     private Category category;
+
+    @SerializedName("pictures")
+    private ArrayList<Picture> pictures;
 
     private int status;
 
@@ -154,6 +159,7 @@ public class Goods implements Parcelable {
                 ", detail='" + detail + '\'' +
                 ", user=" + user +
                 ", category=" + category +
+                ", pictures=" + pictures +
                 ", status=" + status +
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
@@ -166,5 +172,13 @@ public class Goods implements Parcelable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public ArrayList<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(ArrayList<Picture> pictures) {
+        this.pictures = pictures;
     }
 }
