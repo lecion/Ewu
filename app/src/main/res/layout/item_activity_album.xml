@@ -4,25 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
     android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
     android:layout_marginTop="4dp"
     android:background="@color/md_amber_50"
     app:cardCornerRadius="4dp"
     app:cardElevation="1dp"
     >
 
-    <!--<com.facebook.drawee.view.SimpleDraweeView-->
-    <!--android:id="@+id/sdv_photo"-->
-    <!--android:layout_width="120dp"-->
-    <!--android:layout_height="120dp"-->
-    <!--app:placeholderImage="@mipmap/avatar"-->
-    <!--/>-->
-    <ImageView
-        android:id="@+id/iv_photo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@mipmap/avatar"
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_photo"
+        android:layout_width="1300dp"
+        android:layout_height="130dp"
+        app:placeholderImage="@mipmap/avatar"
         />
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_photo"-->
+    <!--android:layout_width="200dp"-->
+    <!--android:layout_height="200dp"-->
+    <!--android:src="@mipmap/avatar"-->
+    <!--/>-->
 </android.support.v7.widget.CardView>

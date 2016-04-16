@@ -1,5 +1,7 @@
 package com.yliec.ewu.di.module;
 
+import android.content.ContentResolver;
+
 import com.yliec.ewu.app.App;
 
 import dagger.Module;
@@ -19,5 +21,10 @@ public class AppModule {
     @Provides
     public App provideApplication() {
         return mApp;
+    }
+
+    @Provides
+    public ContentResolver provideContentProvider() {
+        return mApp.getContentResolver();
     }
 }
