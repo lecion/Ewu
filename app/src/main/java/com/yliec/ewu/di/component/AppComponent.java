@@ -1,7 +1,7 @@
 package com.yliec.ewu.di.component;
 
 import com.yliec.ewu.di.module.AppModule;
-import com.yliec.ewu.module.publish.AlbumPresenter;
+import com.yliec.ewu.model.LocalImageModel;
 
 import dagger.Component;
 
@@ -13,5 +13,5 @@ public interface AppComponent {
 //    void inject(MainFragment mainFragment);
 
 //    void inject(MainActivity mainActivity);
-    void inject(AlbumPresenter albumPresenter);
+void inject(LocalImageModel localImageModel);
 }

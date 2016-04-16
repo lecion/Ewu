@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.yliec.ewu.R;
 import com.yliec.ewu.app.App;
+import com.yliec.ewu.di.component.ApiComponent;
 import com.yliec.ewu.di.component.AppComponent;
 import com.yliec.lsword.compat.StatusBarCompat;
 
@@ -74,5 +75,9 @@ public abstract class BaseActivity<PresenterType extends Presenter> extends Nucl
 
     protected AppComponent getAppComponent() {
         return ((App) (getApplication())).getAppComponent();
+    }
+
+    protected ApiComponent getApiComponent() {
+        return ((App) (getApplication())).getApiComponent();
     }
 }

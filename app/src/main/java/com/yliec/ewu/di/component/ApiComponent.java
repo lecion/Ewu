@@ -2,6 +2,7 @@ package com.yliec.ewu.di.component;
 
 import com.yliec.ewu.di.module.ApiModule;
 import com.yliec.ewu.module.main.MainPresenter;
+import com.yliec.ewu.module.publish.AlbumPresenter;
 
 import dagger.Component;
 
@@ -11,4 +12,6 @@ import dagger.Component;
 @Component(modules = ApiModule.class)
 public interface ApiComponent {
     void inject(MainPresenter mainPresenter);
+
+    void inject(AlbumPresenter albumPresenter);
 }

@@ -23,6 +23,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.LocalImage;
 import com.yliec.ewu.app.base.BaseActivity;
+import com.yliec.ewu.model.LocalImageModel;
 import com.yliec.lsword.compat.util.L;
 
 import java.util.ArrayList;
@@ -100,14 +101,19 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
 //            getAppComponent().inject(presenter);
 //            return presenter;
 //        });
-        getAppComponent().inject(getPresenter());
+        getApiComponent().inject(getPresenter());
     }
+
 
     public void onItemChange(List<LocalImage> imageList) {
         mPhotos.clear();
         mPhotos.addAll(imageList);
         L.d(TAG, "onItemChange" + imageList.size());
         mAlbumAdapter.notifyDataSetChanged();
+    }
+
+    public void onNetError(Throwable throwable) {
+        Snackbar.make(getWindow().getDecorView(), "网络错误，请检查网络连接", Snackbar.LENGTH_LONG).show();
     }
 
     class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder> {
@@ -155,5 +161,9 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
                 ButterKnife.bind(this, itemView);
             }
         }
+    }
+
+    public void injectModle(LocalImageModel localImageModel) {
+        getAppComponent().inject(localImageModel);
     }
 }
