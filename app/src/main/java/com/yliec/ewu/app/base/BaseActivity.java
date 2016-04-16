@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
 import com.yliec.ewu.R;
+import com.yliec.ewu.app.App;
+import com.yliec.ewu.di.component.AppComponent;
 import com.yliec.lsword.compat.StatusBarCompat;
 
 import butterknife.Bind;
@@ -46,7 +48,7 @@ public abstract class BaseActivity<PresenterType extends Presenter> extends Nucl
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         if (!TextUtils.isEmpty(NavUtils.getParentActivityName(this))) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_back);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             mToolbar.setNavigationOnClickListener(view -> finish());
         } else {
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -68,5 +70,9 @@ public abstract class BaseActivity<PresenterType extends Presenter> extends Nucl
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    protected AppComponent getAppComponent() {
+        return ((App) (getApplication())).getAppComponent();
     }
 }

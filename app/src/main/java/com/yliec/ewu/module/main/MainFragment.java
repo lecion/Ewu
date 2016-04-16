@@ -31,6 +31,7 @@ import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.Goods;
 import com.yliec.ewu.api.entity.element.Picture;
 import com.yliec.ewu.app.base.BaseFragment;
+import com.yliec.ewu.module.publish.AlbumActivity;
 import com.yliec.ewu.net.Api;
 import com.yliec.ewu.widget.LDraweeView;
 import com.yliec.lsword.compat.util.L;
@@ -120,10 +121,16 @@ public class MainFragment extends BaseFragment<MainPresenter> {
             @Override
             public void onClick(View v) {
                 //TODO 发布商品
-                openCamera();
+//                openCamera();
+                toAlbumActivity();
             }
         });
         lazyLoad();
+    }
+
+    private void toAlbumActivity() {
+        Intent intent = new Intent(getActivity(), AlbumActivity.class);
+        startActivity(intent);
     }
 
     private void openCamera() {
