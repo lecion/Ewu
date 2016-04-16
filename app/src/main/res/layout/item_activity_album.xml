@@ -13,7 +13,7 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdv_photo"
-        android:layout_width="1300dp"
+        android:layout_width="130dp"
         android:layout_height="130dp"
         app:placeholderImage="@mipmap/avatar"
         />
