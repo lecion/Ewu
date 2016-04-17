@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.yliec.ewu.app.base.BasePresenter;
 import com.yliec.ewu.model.LocalImageModel;
-import com.yliec.lsword.compat.util.L;
 
 import javax.inject.Inject;
 
@@ -30,10 +29,17 @@ public class AlbumPresenter extends BasePresenter<AlbumActivity> {
     }
 
     public void loadPhotos() {
-        long startTime = System.currentTimeMillis();
         start(REQUEST_IMAGES_ID);
-        long endTime = System.currentTimeMillis();
-        L.d(TAG, "use time: " + (endTime - startTime) + " ms");
+//        mLocalImageModel.getImageBucketList().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<ImageBucket>>() {
+//            @Override
+//            public void call(List<ImageBucket> imageBuckets) {
+//                L.d(TAG, "getImageBucketList: " + imageBuckets.size());
+//                for (int i = 0; i < imageBuckets.size(); i++) {
+//                    ImageBucket bucket = imageBuckets.get(i);
+//                    L.d(TAG, "getImageBucketList: bucket( "+i+" ) " + bucket);
+//                }
+//            }
+//        });
     }
 
     @Override

@@ -9,4 +9,13 @@ public class ImageBucket {
     public int count = 0;
     public String bucketName;
     public List<LocalImage> imageList;
+
+    @Override
+    public String toString() {
+        return "ImageBucket{" +
+                "count=" + count +
+                ", bucketName='" + bucketName + '\'' +
+                ", imageList=" + imageList +
+                '}';
+    }
 }

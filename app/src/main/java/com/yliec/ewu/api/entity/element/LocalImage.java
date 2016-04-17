@@ -63,4 +63,12 @@ public class LocalImage {
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
+
+    @Override
+    public String toString() {
+        return "LocalImage{" +
+                "imageId='" + imageId + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                '}';
+    }
 }
