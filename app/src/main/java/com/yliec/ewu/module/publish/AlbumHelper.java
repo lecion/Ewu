@@ -15,7 +15,8 @@ import java.util.ArrayList;
  * Created by Lecion on 4/16/16.
  */
 public class AlbumHelper {
-    public static ArrayList<LocalImage> tmpSelected = new ArrayList<>();
+    public static final int MAX_SELECT = 9;
+    public static ArrayList<LocalImage> selectedList = new ArrayList<>(MAX_SELECT);
 
     public static Bitmap resizeImage(String path) throws IOException {
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(new File(path)));

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,7 +17,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.cjj.Util;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -39,11 +43,14 @@ import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(AlbumPresenter.class)
-public class AlbumActivity extends BaseActivity<AlbumPresenter> {
+public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.OnClickListener {
     public static final String PERMISSION_READ_EXTERNAL = "android.permission.READ_EXTERNAL_STORAGE";
     public static final int REQUEST_READ_EXTERNAL_CODE = 1;
     @Bind(R.id.rv_album)
     RecyclerView mRecyclerView;
+
+    @Bind(R.id.btn_finish)
+    Button mFinishButton;
 
     RecyclerView.LayoutManager mGridLayoutManager;
 
@@ -60,12 +67,8 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
         mGridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setAdapter(mAlbumAdapter = new AlbumAdapter());
+        mFinishButton.setOnClickListener(this);
         mPhotos.add(0, new LocalImage());
-    }
-
-    @Override
-    public void onContentChanged() {
-        super.onContentChanged();
     }
 
     @Override
@@ -134,8 +137,20 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
         Snackbar.make(getWindow().getDecorView(), "网络错误，请检查网络连接", Snackbar.LENGTH_LONG).show();
     }
 
-    class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_finish) {
+            if (AlbumHelper.selectedList.size() > 0) {
+                finish();
+            } else {
+                Toast.makeText(AlbumActivity.this, "请选择至少一张图片", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
+    class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private List<String> selectedList = new ArrayList<>();
+        private int mFloatColor = getResources().getColor(R.color.md_grey_A800);
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -153,9 +168,6 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
             if (getItemViewType(position) == 0) {
                 ((CameraHolder) holder).mCameraButton.setOnClickListener(v -> openCamera());
             } else {
-                if (position == 1) {
-                    L.d(TAG, "onBindViewHolder " + mPhotos.get(1).getImagePath());
-                }
                 AlbumHolder h = (AlbumHolder) holder;
                 Uri uri = Uri.parse("file://" + mPhotos.get(position).getImagePath());
                 int width = Util.dip2px(AlbumActivity.this, 130);
@@ -168,6 +180,42 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
                         .setImageRequest(request)
                         .build();
                 h.mDraweeView.setController(controller);
+                //设置tag，用于判断选中的状态
+                h.mSelector.setTag(mPhotos.get(position).getImageId());
+                if (selectedList != null) {
+                    boolean selected = selectedList.contains(mPhotos.get(position).getImageId());
+                    h.mSelector.setChecked(selected);
+                    h.mFloatView.setBackgroundColor(selected ? mFloatColor : Color.TRANSPARENT);
+                } else {
+                    h.mSelector.setChecked(false);
+                    h.mFloatView.setBackgroundColor(Color.TRANSPARENT);
+                }
+
+                h.mSelector.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        if (!selectedList.contains(h.mSelector.getTag())) {
+                            if (AlbumHelper.selectedList.size() >= 9) {
+                                Snackbar.make(getWindow().getDecorView(), "最多只能选择九张图哦~", Snackbar.LENGTH_LONG).show();
+                                h.mSelector.setChecked(false);
+                                return;
+                            }
+                            h.mFloatView.setBackgroundColor(mFloatColor);
+                            AlbumHelper.selectedList.add(mPhotos.get(position));
+                            selectedList.add(mPhotos.get(position).getImageId());
+                            mFinishButton.setText("完成(" + selectedList.size() + ")");
+                        }
+                    } else {
+                        if (selectedList.contains(h.mSelector.getTag())) {
+                            h.mFloatView.setBackgroundColor(Color.TRANSPARENT);
+                            AlbumHelper.selectedList.remove(mPhotos.get(position));
+                            selectedList.remove(mPhotos.get(position).getImageId());
+                            String btnStr = selectedList.size() == 0 ? "选择图片" : "完成(" + selectedList.size() + ")";
+                            mFinishButton.setText(btnStr);
+                        }
+                    }
+                });
+
+                L.d(TAG, "selectedList " + selectedList.toString() + " AlbumHelper.selectedList " + AlbumHelper.selectedList);
             }
         }
 
@@ -184,9 +232,10 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
         class AlbumHolder extends RecyclerView.ViewHolder {
             @Bind(R.id.sdv_photo)
             SimpleDraweeView mDraweeView;
-//            @Bind(R.id.iv_photo)
-//            ImageView mImageView;
-
+            @Bind(R.id.tb_select)
+            ToggleButton mSelector;
+            @Bind(R.id.float_view)
+            View mFloatView;
             public AlbumHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
@@ -230,5 +279,11 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
 
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AlbumHelper.selectedList.clear();
     }
 }
