@@ -60,6 +60,7 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
         mGridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setAdapter(mAlbumAdapter = new AlbumAdapter());
+        mPhotos.add(0, new LocalImage());
     }
 
     @Override
