@@ -123,9 +123,6 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
 
     public void onItemChange(List<LocalImage> imageList) {
         mPhotos.clear();
-//        LocalImage localImage = new LocalImage();
-//        localImage.setImagePath("res://drawable/" + R.drawable.ic_photo_camera_white_48dp);
-//        localImage.setImageId("openCamera");
         mPhotos.add(0, new LocalImage());
         mPhotos.addAll(imageList);
         L.d(TAG, "onItemChange" + imageList.size());
@@ -155,6 +152,9 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
             if (getItemViewType(position) == 0) {
                 ((CameraHolder) holder).mCameraButton.setOnClickListener(v -> openCamera());
             } else {
+                if (position == 1) {
+                    L.d(TAG, "onBindViewHolder " + mPhotos.get(1).getImagePath());
+                }
                 AlbumHolder h = (AlbumHolder) holder;
                 Uri uri = Uri.parse("file://" + mPhotos.get(position).getImagePath());
                 int width = Util.dip2px(AlbumActivity.this, 130);
