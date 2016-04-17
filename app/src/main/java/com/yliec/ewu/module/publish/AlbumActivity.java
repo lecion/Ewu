@@ -3,10 +3,11 @@ package com.yliec.ewu.module.publish;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -35,6 +36,8 @@ import com.yliec.ewu.app.base.BaseActivity;
 import com.yliec.ewu.model.LocalImageModel;
 import com.yliec.lsword.compat.util.L;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +55,8 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
     @Bind(R.id.btn_finish)
     Button mFinishButton;
 
+    private File imageFile;
+
     RecyclerView.LayoutManager mGridLayoutManager;
 
     AlbumAdapter mAlbumAdapter;
@@ -60,6 +65,7 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
     private static final int TAKE_PHOTO = 1;
     private boolean once = true;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,6 +242,7 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
             ToggleButton mSelector;
             @Bind(R.id.float_view)
             View mFloatView;
+
             public AlbumHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
@@ -260,8 +267,37 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
 
     private void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, TAKE_PHOTO);
+        if (initImageFile()) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
+            startActivityForResult(intent, TAKE_PHOTO);
+        }
+    }
+
+    private boolean initImageFile() {
+        if (hasSDCard()) {
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath()
+                    + File.separator
+                    + System.currentTimeMillis()
+                    + ".png";
+            imageFile = new File(path);
+            if (!imageFile.exists()) {
+                try {
+                    imageFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean hasSDCard() {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -272,9 +308,22 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
         switch (requestCode) {
             case TAKE_PHOTO:
                 if (resultCode == Activity.RESULT_OK) {
-                    //TODO 获得图片并存储
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    L.d(TAG, "Bitmap " + bitmap);
+                    if (imageFile.exists()) {
+                        LocalImage image = new LocalImage();
+                        image.setImagePath(imageFile.getPath());
+                        L.d(TAG, "localImage:" + image);
+                        Intent intent = new Intent(this, PublishActivity.class);
+                        ArrayList<LocalImage> imageList = new ArrayList<>();
+                        imageList.add(image);
+                        intent.putParcelableArrayListExtra("images", imageList);
+                        startActivity(intent);
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlbumActivity.this.finish();
+                            }
+                        }, 300);
+                    }
                 }
 
                 break;

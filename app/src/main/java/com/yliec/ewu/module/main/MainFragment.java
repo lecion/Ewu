@@ -134,7 +134,7 @@ public class MainFragment extends BaseFragment<MainPresenter> {
      * 等待视图创建完毕后加载数据
      */
     private void lazyLoad() {
-        mRefreshLayout.autoRefresh();
+//            mRefreshLayout.autoRefresh();
     }
 
     public void onChangeItems(List<Goods> goodsList, int pageIndex) {
