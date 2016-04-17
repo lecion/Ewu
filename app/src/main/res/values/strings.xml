@@ -7,4 +7,5 @@
     <string name="menu_item_1">item1</string>
     <string name="menu_item_2">item2</string>
     <string name="activity_album">相册</string>
+    <string name="take_photo">拍摄照片</string>
 </resources>

@@ -33,6 +33,7 @@ public class LocalImageModel {
     private final String TAG = getClass().getSimpleName();
 
     public Observable<List<ImageBucket>> getImageBucketList() {
+        mLocalImages.clear();
         String columns[] = new String[]{
                 Media._ID,
                 Media.BUCKET_ID,
@@ -57,6 +58,7 @@ public class LocalImageModel {
 
 
     public Observable<List<LocalImage>> getLocalImages() {
+        mLocalImages.clear();
         String columns[] = new String[]{
                 Media._ID,
                 Media.BUCKET_ID,

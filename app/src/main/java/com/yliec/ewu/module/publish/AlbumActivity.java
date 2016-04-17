@@ -1,8 +1,12 @@
 package com.yliec.ewu.module.publish;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -12,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.cjj.Util;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -46,12 +51,20 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
 
     private List<LocalImage> mPhotos = new ArrayList<>();
 
+    private static final int TAKE_PHOTO = 1;
+    private boolean once = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setAdapter(mAlbumAdapter = new AlbumAdapter());
+    }
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
     }
 
     @Override
@@ -67,8 +80,11 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
                 ActivityCompat.requestPermissions(this, new String[]{PERMISSION_READ_EXTERNAL}, REQUEST_READ_EXTERNAL_CODE);
             }
         } else {
-            L.d(TAG, "loadPhotos");
-            getPresenter().loadPhotos();
+            if (once) {
+                getPresenter().loadPhotos();
+                L.d(TAG, "loadPhotos");
+                once = false;
+            }
         }
     }
 
@@ -107,6 +123,10 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
 
     public void onItemChange(List<LocalImage> imageList) {
         mPhotos.clear();
+//        LocalImage localImage = new LocalImage();
+//        localImage.setImagePath("res://drawable/" + R.drawable.ic_photo_camera_white_48dp);
+//        localImage.setImageId("openCamera");
+        mPhotos.add(0, new LocalImage());
         mPhotos.addAll(imageList);
         L.d(TAG, "onItemChange" + imageList.size());
         mAlbumAdapter.notifyDataSetChanged();
@@ -116,34 +136,44 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
         Snackbar.make(getWindow().getDecorView(), "网络错误，请检查网络连接", Snackbar.LENGTH_LONG).show();
     }
 
-    class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder> {
+    class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
 
         @Override
-        public AlbumHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(AlbumActivity.this).inflate(R.layout.item_activity_album, parent, false);
-            return new AlbumHolder(v);
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            switch (viewType) {
+                case 0:
+                    View v = LayoutInflater.from(AlbumActivity.this).inflate(R.layout.item_activity_album_camera, parent, false);
+                    return new CameraHolder(v);
+                default:
+                    return new AlbumHolder(LayoutInflater.from(AlbumActivity.this).inflate(R.layout.item_activity_album, parent, false));
+            }
         }
 
         @Override
-        public void onBindViewHolder(AlbumHolder holder, int position) {
-//            holder.mDraweeView.setImageResource(R.mipmap.avatar);
-//            holder.mImageView.setImageResource(R.mipmap.avatar);
-            L.d(TAG, "start onBindViewHolder");
-            Uri uri = Uri.parse("file://" + mPhotos.get(position).getImagePath());
-            int width = Util.dip2px(AlbumActivity.this, 130);
-            int height = Util.dip2px(AlbumActivity.this, 130);
-            ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
-                    .setResizeOptions(new ResizeOptions(width, height))
-                    .build();
-            PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
-                    .setOldController(holder.mDraweeView.getController())
-                    .setImageRequest(request)
-                    .build();
-            holder.mDraweeView.setController(controller);
-//            holder.mDraweeView.setImageURI(uri);
-            L.d(TAG, "onBindViewHolder" + uri.toString());
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (getItemViewType(position) == 0) {
+                ((CameraHolder) holder).mCameraButton.setOnClickListener(v -> openCamera());
+            } else {
+                AlbumHolder h = (AlbumHolder) holder;
+                Uri uri = Uri.parse("file://" + mPhotos.get(position).getImagePath());
+                int width = Util.dip2px(AlbumActivity.this, 130);
+                int height = Util.dip2px(AlbumActivity.this, 130);
+                ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+                        .setResizeOptions(new ResizeOptions(width, height))
+                        .build();
+                PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+                        .setOldController(h.mDraweeView.getController())
+                        .setImageRequest(request)
+                        .build();
+                h.mDraweeView.setController(controller);
+            }
         }
 
+        @Override
+        public int getItemViewType(int position) {
+            return position == 0 ? 0 : 1;
+        }
 
         @Override
         public int getItemCount() {
@@ -161,9 +191,43 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> {
                 ButterKnife.bind(this, itemView);
             }
         }
+
+        class CameraHolder extends RecyclerView.ViewHolder {
+
+            @Bind(R.id.ib_camera)
+            ImageButton mCameraButton;
+
+            public CameraHolder(View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+        }
     }
 
     public void injectModle(LocalImageModel localImageModel) {
         getAppComponent().inject(localImageModel);
+    }
+
+
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, TAKE_PHOTO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        L.d(TAG, "requestCode TAKE_PHOTO resultCode "
+                + resultCode);
+        switch (requestCode) {
+            case TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+                    //TODO 获得图片并存储
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                    L.d(TAG, "Bitmap " + bitmap);
+                }
+
+                break;
+        }
     }
 }

@@ -1,11 +1,8 @@
 package com.yliec.ewu.module.main;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -61,7 +58,7 @@ public class MainFragment extends BaseFragment<MainPresenter> {
     private LinearLayoutManager mLayoutManager;
 
     protected int sortType = Api.SORT_TYPE.POP;
-    private static final int TAKE_PHOTO = 1;
+
 
     public MainFragment() {
         initData();
@@ -131,28 +128,6 @@ public class MainFragment extends BaseFragment<MainPresenter> {
     private void toAlbumActivity() {
         Intent intent = new Intent(getActivity(), AlbumActivity.class);
         startActivity(intent);
-    }
-
-    private void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, TAKE_PHOTO);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        L.d(TAG, "requestCode TAKE_PHOTO resultCode "
-                + resultCode);
-        switch (requestCode) {
-            case TAKE_PHOTO:
-                if (resultCode == Activity.RESULT_OK) {
-                    //TODO 获得图片并存储
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    L.d(TAG, "Bitmap " + bitmap);
-                }
-
-                break;
-        }
     }
 
     /**
