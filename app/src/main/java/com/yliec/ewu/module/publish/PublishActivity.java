@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.LocalImage;
 import com.yliec.ewu.app.base.BaseActivity;
@@ -12,11 +11,9 @@ import com.yliec.lsword.compat.util.L;
 
 import java.util.List;
 
-import butterknife.Bind;
-
 public class PublishActivity extends BaseActivity {
-    @Bind(R.id.sdv_pub)
-    SimpleDraweeView mImageView;
+//    @Bind(R.id.sdv_pub)
+//    SimpleDraweeView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +24,7 @@ public class PublishActivity extends BaseActivity {
             L.d(TAG, "imageList: " + imageList);
             List<LocalImage> images = (List<LocalImage>) intent.getExtras().getSerializable("images");
             if (images != null && images.size() > 0) {
-                mImageView.setImageURI(Uri.parse("file://" + images.get(0).getImagePath()));
+                L.d(TAG, Uri.parse("file://" + images.get(0).getImagePath()).toString());
             }
         }
     }

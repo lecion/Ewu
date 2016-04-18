@@ -8,4 +8,9 @@
     <string name="menu_item_2">item2</string>
     <string name="activity_album">相册</string>
     <string name="take_photo">拍摄照片</string>
+    <string name="publish_title">标题</string>
+    <string name="publish_description">描述以下你的闲置吧</string>
+    <string name="publish_price">价格</string>
+    <string name="publish_confirm">确定发布</string>
+    <string name="publish_category">分类</string>
 </resources>
