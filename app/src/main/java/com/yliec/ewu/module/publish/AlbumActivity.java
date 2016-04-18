@@ -71,11 +71,10 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        if (intent != null && intent.getParcelableArrayListExtra(PublishActivity.ADD_IMAGES) != null) {
-            List<LocalImage> uploaded = intent.getParcelableArrayListExtra(PublishActivity.ADD_IMAGES);
-            selectedSize = uploaded.size();
+        if (intent != null && intent.getIntExtra(PublishActivity.UPLOADED_COUNT, 0) != 0) {
+            selectedSize = intent.getIntExtra(PublishActivity.UPLOADED_COUNT, 0);
             fromPublish = true;
-            L.d(TAG, "onCreate uploaded: " + uploaded);
+            L.d(TAG, "onCreate selectedSize: " + selectedSize);
         }
         mGridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(mGridLayoutManager);

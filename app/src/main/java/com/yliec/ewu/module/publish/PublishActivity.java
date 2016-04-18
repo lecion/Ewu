@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class PublishActivity extends BaseActivity implements View.OnClickListener {
     public static final int REQUEST_ADD_IMAGE = 1;
-    public static final String ADD_IMAGES = "addImages";
+    public static final String UPLOADED_COUNT = "uploadedCount";
     //    @Bind(R.id.sdv_pub)
 //    SimpleDraweeView mImageView;
 
@@ -171,10 +171,8 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
                         Toast.makeText(PublishActivity.this, "最多只能选9张图哦", Toast.LENGTH_LONG).show();
                     } else {
                         Intent i = new Intent(PublishActivity.this, AlbumActivity.class);
-                        ArrayList<LocalImage> tmpList = new ArrayList<>();
-                        tmpList.addAll(mUploadImages);
-                        tmpList.remove(0);
-                        i.putParcelableArrayListExtra(ADD_IMAGES, tmpList);
+                        int count = mUploadImages.size() - 1;
+                        i.putExtra(UPLOADED_COUNT, count);
                         startActivityForResult(i, REQUEST_ADD_IMAGE);
                     }
                 });
