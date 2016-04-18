@@ -9,11 +9,14 @@ import com.yliec.ewu.api.entity.element.LocalImage;
 import com.yliec.ewu.app.base.BaseActivity;
 import com.yliec.lsword.compat.util.L;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PublishActivity extends BaseActivity {
 //    @Bind(R.id.sdv_pub)
 //    SimpleDraweeView mImageView;
+
+    List<LocalImage> uploadImages = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +26,12 @@ public class PublishActivity extends BaseActivity {
             List<LocalImage> imageList = intent.getParcelableArrayListExtra("images");
             L.d(TAG, "imageList: " + imageList);
             List<LocalImage> images = (List<LocalImage>) intent.getExtras().getSerializable("images");
-            if (images != null && images.size() > 0) {
-                L.d(TAG, Uri.parse("file://" + images.get(0).getImagePath()).toString());
+            //得到需要上传的图片
+            uploadImages.addAll(images);
+            if (images.size() > 0) {
+                for (LocalImage image : images) {
+                    L.d(TAG, Uri.parse("file://" + image.getImagePath()).toString());
+                }
             }
         }
     }
