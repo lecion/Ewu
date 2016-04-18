@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,12 +27,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import nucleus.factory.RequiresPresenter;
 
-public class PublishActivity extends BaseActivity implements View.OnClickListener {
+@RequiresPresenter(PublishPresenter.class)
+public class PublishActivity extends BaseActivity<PublishPresenter> implements View.OnClickListener {
     public static final int REQUEST_ADD_IMAGE = 1;
     public static final String UPLOADED_COUNT = "uploadedCount";
-    //    @Bind(R.id.sdv_pub)
-//    SimpleDraweeView mImageView;
 
     @Bind(R.id.et_title)
     EditText mEtTitle;
@@ -90,6 +91,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     private void initView() {
         mRvUpload.setLayoutManager(new GridLayoutManager(this, 4));
         mRvUpload.setAdapter(mUploadImagesAdapter = new UploadImagesAdapter());
+        mBtnPublish.setOnClickListener(this);
     }
 
     @Override
@@ -105,9 +107,28 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ib_add:
+            case R.id.btn_publish:
+                boolean validate = true;
+                String title = mEtTitle.getText().toString().trim();
+                String description = mEtDescription.getText().toString().trim();
+                String price = mEtPrice.getText().toString();
 
-
+                if (TextUtils.isEmpty(title)) {
+                    mEtTitle.setError("标题不能为空");
+                    validate = false;
+                }
+                if (TextUtils.isEmpty(description)) {
+                    mEtDescription.setError("描述不能为空");
+                    validate = false;
+                }
+                if (TextUtils.isEmpty(price)) {
+                    mEtPrice.setError("请填写价格");
+                    validate = false;
+                }
+                //TODO 验证所有字段
+                if (validate) {
+                    getPresenter().publish();
+                }
                 break;
         }
     }

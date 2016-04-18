@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/publish_title"
                     android:padding="16dp"
-
+                    android:imeOptions="actionDone"
                     />
 
                 <EditText
