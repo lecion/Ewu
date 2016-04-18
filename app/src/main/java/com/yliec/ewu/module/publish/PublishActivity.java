@@ -3,6 +3,7 @@ package com.yliec.ewu.module.publish;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -106,16 +107,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ib_add:
-                if (mUploadImages.size() >= 9) {
-                    Toast.makeText(this, "最多只能选9张图哦", Toast.LENGTH_LONG).show();
-                } else {
-                    Intent i = new Intent(this, AlbumActivity.class);
-                    ArrayList<LocalImage> tmpList = new ArrayList<>();
-                    tmpList.addAll(mUploadImages);
-                    tmpList.remove(0);
-                    i.putParcelableArrayListExtra(ADD_IMAGES, tmpList);
-                    startActivityForResult(i, REQUEST_ADD_IMAGE);
-                }
+
 
                 break;
         }
@@ -151,12 +143,13 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (position == 0) {
-                AddViewHolder h = (AddViewHolder) holder;
-                h.mAddButton.setOnClickListener(PublishActivity.this);
-            } else {
+            if (position != 0) {
                 UploadImagesHolder h = (UploadImagesHolder) holder;
                 h.mDraweeView.setImageURI(Uri.parse("file://" + mUploadImages.get(position).getImagePath()));
+                h.mDelete.setOnClickListener(v -> {
+                    mUploadImages.remove(position);
+                    notifyDataSetChanged();
+                });
             }
         }
 
@@ -172,11 +165,24 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
         class AddViewHolder extends RecyclerView.ViewHolder {
 
-            @Bind(R.id.ib_add)
-            ImageButton mAddButton;
+            @Bind(R.id.cv_add)
+            CardView mAddButton;
+
             public AddViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
+                itemView.setOnClickListener(view -> {
+                    if (mUploadImages.size() >= 9) {
+                        Toast.makeText(PublishActivity.this, "最多只能选9张图哦", Toast.LENGTH_LONG).show();
+                    } else {
+                        Intent i = new Intent(PublishActivity.this, AlbumActivity.class);
+                        ArrayList<LocalImage> tmpList = new ArrayList<>();
+                        tmpList.addAll(mUploadImages);
+                        tmpList.remove(0);
+                        i.putParcelableArrayListExtra(ADD_IMAGES, tmpList);
+                        startActivityForResult(i, REQUEST_ADD_IMAGE);
+                    }
+                });
             }
         }
 
@@ -185,8 +191,7 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
             SimpleDraweeView mDraweeView;
             @Bind(R.id.ib_delete)
             ImageButton mDelete;
-            @Bind(R.id.float_view)
-            View mFloatView;
+
             public UploadImagesHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
