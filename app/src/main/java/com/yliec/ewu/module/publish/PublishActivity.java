@@ -3,14 +3,18 @@ package com.yliec.ewu.module.publish;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.LocalImage;
 import com.yliec.ewu.app.base.BaseActivity;
@@ -42,13 +46,18 @@ public class PublishActivity extends BaseActivity {
     EditText mEtPrice;
 
     @Bind(R.id.rl_category_container)
-    LinearLayout mCategoryContainer;
+    RelativeLayout mCategoryContainer;
 
     @Bind(R.id.tv_publish_category)
     TextView mTvCategory;
 
     @Bind(R.id.btn_publish)
     Button mBtnPublish;
+
+    @Bind(R.id.rv_upload_image)
+    RecyclerView mRvUpload;
+
+    UploadImagesAdapter mUploadImagesAdapter;
 
 
     List<LocalImage> mUploadImages = new ArrayList<>();
@@ -72,6 +81,12 @@ public class PublishActivity extends BaseActivity {
                 }
             }
         }
+        initView();
+    }
+
+    private void initView() {
+        mRvUpload.setLayoutManager(new GridLayoutManager(this, 4));
+        mRvUpload.setAdapter(mUploadImagesAdapter = new UploadImagesAdapter());
     }
 
     @Override
@@ -89,12 +104,21 @@ public class PublishActivity extends BaseActivity {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return null;
+            if (viewType == 0) {
+                return new AddViewHolder(getLayoutInflater().inflate(R.layout.item_activity_publish_add, parent, false));
+            } else {
+                return new UploadImagesHolder(getLayoutInflater().inflate(R.layout.item_activity_publish_upload, parent, false));
+            }
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (position == 0) {
 
+            } else {
+                UploadImagesHolder h = (UploadImagesHolder) holder;
+                h.mDraweeView.setImageURI(Uri.parse("file://" + mUploadImages.get(position).getImagePath()));
+            }
         }
 
         @Override
@@ -107,16 +131,21 @@ public class PublishActivity extends BaseActivity {
             return position == 0 ? 0 : 1;
         }
 
-        class DeleteViewHolder extends RecyclerView.ViewHolder {
+        class AddViewHolder extends RecyclerView.ViewHolder {
 
-            public DeleteViewHolder(View itemView) {
+            public AddViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }
         }
 
         class UploadImagesHolder extends RecyclerView.ViewHolder {
-
+            @Bind(R.id.sdv_photo)
+            SimpleDraweeView mDraweeView;
+            @Bind(R.id.ib_delete)
+            ImageButton mDelete;
+            @Bind(R.id.float_view)
+            View mFloatView;
             public UploadImagesHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="4dp"
+    android:background="@color/md_amber_50"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="1dp"
+    >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_photo"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        app:placeholderImage="@drawable/ic_refresh_white_48dp"
+        app:failureImage="@android:drawable/stat_notify_error"
+        android:background="@color/md_grey_800"
+        android:layout_gravity="center"
+        app:actualImageScaleType="centerCrop"
+        />
+
+    <ImageButton
+        android:id="@+id/ib_delete"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_clear_white_24dp"
+        android:textOff=""
+        android:textOn=""
+        android:layout_gravity="end"
+        android:layout_marginRight="4dp"
+        android:padding="8dp"
+        />
+
+    <ImageView
+        android:id="@+id/float_view"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:background="@android:color/transparent"
+        />
+</android.support.v7.widget.CardView>
