@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yliec.ewu.R;
@@ -26,8 +27,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PublishActivity extends BaseActivity {
-//    @Bind(R.id.sdv_pub)
+public class PublishActivity extends BaseActivity implements View.OnClickListener {
+    public static final int REQUEST_ADD_IMAGE = 1;
+    public static final String ADD_IMAGES = "addImages";
+    //    @Bind(R.id.sdv_pub)
 //    SimpleDraweeView mImageView;
 
     @Bind(R.id.et_title)
@@ -60,7 +63,7 @@ public class PublishActivity extends BaseActivity {
     UploadImagesAdapter mUploadImagesAdapter;
 
 
-    List<LocalImage> mUploadImages = new ArrayList<>();
+    ArrayList<LocalImage> mUploadImages = new ArrayList<>();
     LocalImage mAddBtn = new LocalImage();
 
 
@@ -99,6 +102,41 @@ public class PublishActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ib_add:
+                if (mUploadImages.size() >= 9) {
+                    Toast.makeText(this, "最多只能选9张图哦", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent i = new Intent(this, AlbumActivity.class);
+                    ArrayList<LocalImage> tmpList = new ArrayList<>();
+                    tmpList.addAll(mUploadImages);
+                    tmpList.remove(0);
+                    i.putParcelableArrayListExtra(ADD_IMAGES, tmpList);
+                    startActivityForResult(i, REQUEST_ADD_IMAGE);
+                }
+
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ADD_IMAGE:
+                if (resultCode == RESULT_OK) {
+                    ArrayList addImages = data.getParcelableArrayListExtra("addImages");
+                    if (addImages != null) {
+                        mUploadImages.addAll(addImages);
+                        mUploadImagesAdapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+        }
+    }
+
     class UploadImagesAdapter extends RecyclerView.Adapter {
 
 
@@ -114,7 +152,8 @@ public class PublishActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (position == 0) {
-
+                AddViewHolder h = (AddViewHolder) holder;
+                h.mAddButton.setOnClickListener(PublishActivity.this);
             } else {
                 UploadImagesHolder h = (UploadImagesHolder) holder;
                 h.mDraweeView.setImageURI(Uri.parse("file://" + mUploadImages.get(position).getImagePath()));
@@ -133,6 +172,8 @@ public class PublishActivity extends BaseActivity {
 
         class AddViewHolder extends RecyclerView.ViewHolder {
 
+            @Bind(R.id.ib_add)
+            ImageButton mAddButton;
             public AddViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);

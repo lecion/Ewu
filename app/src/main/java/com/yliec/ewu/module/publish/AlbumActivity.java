@@ -64,16 +64,23 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
     private static final int TAKE_PHOTO = 1;
     private boolean once = true;
+    private boolean fromPublish = false;
+    private int selectedSize = 0;
+    public ArrayList<LocalImage> mSelectedList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO 从发布页面跳转到本页面选择图片，要初始化AlbumHelper里selectedList的个数
         Intent intent = getIntent();
-
+        if (intent != null && intent.getParcelableArrayListExtra(PublishActivity.ADD_IMAGES) != null) {
+            List<LocalImage> uploaded = intent.getParcelableArrayListExtra(PublishActivity.ADD_IMAGES);
+            selectedSize = uploaded.size();
+            fromPublish = true;
+            L.d(TAG, "onCreate uploaded: " + uploaded);
+        }
         mGridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
-        mRecyclerView.setAdapter(mAlbumAdapter = new AlbumAdapter());
+        mRecyclerView.setAdapter(mAlbumAdapter = new AlbumAdapter(selectedSize));
         mFinishButton.setOnClickListener(this);
         mPhotos.add(0, new LocalImage());
     }
@@ -147,28 +154,37 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_finish) {
-            if (AlbumHelper.selectedList.size() > 0) {
-                Intent intent = new Intent(this, PublishActivity.class);
-                ArrayList<LocalImage> imageList = new ArrayList<>();
-                imageList.addAll(AlbumHelper.selectedList);
-                intent.putParcelableArrayListExtra("images", imageList);
-                startActivity(intent);
-                AlbumActivity.this.finish();
+            if (fromPublish) {
+                Intent intent = new Intent();
+                ArrayList<LocalImage> addImages = new ArrayList<>();
+                addImages.addAll(mSelectedList);
+                intent.putParcelableArrayListExtra("addImages", addImages);
+                setResult(RESULT_OK, intent);
+                this.finish();
             } else {
-                Toast.makeText(AlbumActivity.this, "请选择至少一张图片", Toast.LENGTH_SHORT).show();
+                if (mSelectedList.size() > 0) {
+                    Intent intent = new Intent(this, PublishActivity.class);
+                    ArrayList<LocalImage> imageList = new ArrayList<>();
+                    imageList.addAll(mSelectedList);
+                    intent.putParcelableArrayListExtra("images", imageList);
+                    startActivity(intent);
+                    this.finish();
+                } else {
+                    Toast.makeText(AlbumActivity.this, "请选择至少一张图片", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
     class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        private List<String> selectedList = new ArrayList<>();
+        private List<String> mSelectedIds = new ArrayList<>();
         private int MAX_SELECTED;
 
-        public AlbumAdapter() {
-            MAX_SELECTED = AlbumHelper.MAX_SELECT - AlbumHelper.selectedList.size();
-        }
-
         private int mFloatColor = getResources().getColor(R.color.md_grey_A800);
+
+        public AlbumAdapter(int selectedSize) {
+            MAX_SELECTED = AlbumHelper.MAX_SELECT - selectedSize;
+        }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -200,8 +216,8 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
                 h.mDraweeView.setController(controller);
                 //设置tag，用于判断选中的状态
                 h.mSelector.setTag(mPhotos.get(position).getImageId());
-                if (selectedList != null) {
-                    boolean selected = selectedList.contains(mPhotos.get(position).getImageId());
+                if (mSelectedIds != null) {
+                    boolean selected = mSelectedIds.contains(mPhotos.get(position).getImageId());
                     h.mSelector.setChecked(selected);
                     h.mFloatView.setBackgroundColor(selected ? mFloatColor : Color.TRANSPARENT);
                 } else {
@@ -211,29 +227,29 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
                 h.mSelector.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
-                        if (!selectedList.contains(h.mSelector.getTag())) {
-                            if (selectedList.size() >= MAX_SELECTED) {
+                        if (!mSelectedIds.contains(h.mSelector.getTag())) {
+                            if (mSelectedIds.size() >= MAX_SELECTED) {
                                 Toast.makeText(AlbumActivity.this, "最多只能选择" + MAX_SELECTED + "张图哦~", Toast.LENGTH_SHORT).show();
                                 h.mSelector.setChecked(false);
                                 return;
                             }
                             h.mFloatView.setBackgroundColor(mFloatColor);
-                            AlbumHelper.selectedList.add(mPhotos.get(position));
-                            selectedList.add(mPhotos.get(position).getImageId());
-                            mFinishButton.setText("完成(" + selectedList.size() + ")");
+                            mSelectedList.add(mPhotos.get(position));
+                            mSelectedIds.add(mPhotos.get(position).getImageId());
+                            mFinishButton.setText("完成(" + mSelectedIds.size() + ")");
                         }
                     } else {
-                        if (selectedList.contains(h.mSelector.getTag())) {
+                        if (mSelectedIds.contains(h.mSelector.getTag())) {
                             h.mFloatView.setBackgroundColor(Color.TRANSPARENT);
-                            AlbumHelper.selectedList.remove(mPhotos.get(position));
-                            selectedList.remove(mPhotos.get(position).getImageId());
-                            String btnStr = selectedList.size() == 0 ? "选择图片" : "完成(" + selectedList.size() + ")";
+                            mSelectedList.remove(mPhotos.get(position));
+                            mSelectedIds.remove(mPhotos.get(position).getImageId());
+                            String btnStr = mSelectedIds.size() == 0 ? "选择图片" : "完成(" + mSelectedIds.size() + ")";
                             mFinishButton.setText(btnStr);
                         }
                     }
                 });
 
-                L.d(TAG, "selectedList " + selectedList.toString() + " AlbumHelper.selectedList " + AlbumHelper.selectedList);
+                L.d(TAG, "mSelectedIds " + mSelectedIds.toString() + " mSelectedList " + mSelectedList);
             }
         }
 
@@ -333,12 +349,22 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
                     if (imageFile.exists()) {
                         LocalImage image = new LocalImage();
                         image.setImagePath(imageFile.getPath());
-                        Intent intent = new Intent(this, PublishActivity.class);
                         ArrayList<LocalImage> imageList = new ArrayList<>();
                         imageList.add(image);
-                        intent.putParcelableArrayListExtra("images", imageList);
-                        startActivity(intent);
-                        AlbumActivity.this.finish();
+                        if (fromPublish) {
+                            Intent intent = new Intent();
+                            intent.putParcelableArrayListExtra("addImages", imageList);
+                            setResult(RESULT_OK, intent);
+                            this.finish();
+
+                        } else {
+                            Intent intent = new Intent(this, PublishActivity.class);
+                            intent.putParcelableArrayListExtra("images", imageList);
+                            startActivity(intent);
+                            this.finish();
+                        }
+
+
                     }
                 }
 
@@ -349,6 +375,6 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AlbumHelper.selectedList.clear();
+        mSelectedList.clear();
     }
 }

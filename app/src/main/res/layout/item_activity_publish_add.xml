@@ -17,7 +17,7 @@
         >
 
         <ImageButton
-            android:id="@+id/ib_camera"
+            android:id="@+id/ib_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_white_24dp"
