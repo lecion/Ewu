@@ -148,7 +148,12 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
     public void onClick(View v) {
         if (v.getId() == R.id.btn_finish) {
             if (AlbumHelper.selectedList.size() > 0) {
-                finish();
+                Intent intent = new Intent(this, PublishActivity.class);
+                ArrayList<LocalImage> imageList = new ArrayList<>();
+                imageList.addAll(AlbumHelper.selectedList);
+                intent.putParcelableArrayListExtra("images", imageList);
+                startActivity(intent);
+                AlbumActivity.this.finish();
             } else {
                 Toast.makeText(AlbumActivity.this, "请选择至少一张图片", Toast.LENGTH_SHORT).show();
             }
