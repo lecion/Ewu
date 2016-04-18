@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -65,11 +64,13 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
     private static final int TAKE_PHOTO = 1;
     private boolean once = true;
-    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO 从发布页面跳转到本页面选择图片，要初始化AlbumHelper里selectedList的个数
+        Intent intent = getIntent();
+
         mGridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setAdapter(mAlbumAdapter = new AlbumAdapter());
@@ -156,6 +157,12 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
     class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private List<String> selectedList = new ArrayList<>();
+        private int MAX_SELECTED;
+
+        public AlbumAdapter() {
+            MAX_SELECTED = AlbumHelper.MAX_SELECT - AlbumHelper.selectedList.size();
+        }
+
         private int mFloatColor = getResources().getColor(R.color.md_grey_A800);
 
         @Override
@@ -200,8 +207,8 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
                 h.mSelector.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
                         if (!selectedList.contains(h.mSelector.getTag())) {
-                            if (AlbumHelper.selectedList.size() >= 9) {
-                                Snackbar.make(getWindow().getDecorView(), "最多只能选择九张图哦~", Snackbar.LENGTH_LONG).show();
+                            if (selectedList.size() >= MAX_SELECTED) {
+                                Toast.makeText(AlbumActivity.this, "最多只能选择" + MAX_SELECTED + "张图哦~", Toast.LENGTH_SHORT).show();
                                 h.mSelector.setChecked(false);
                                 return;
                             }
@@ -276,19 +283,29 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
     private boolean initImageFile() {
         if (hasSDCard()) {
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath()
+            String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath()
                     + File.separator
-                    + System.currentTimeMillis()
-                    + ".png";
-            imageFile = new File(path);
-            if (!imageFile.exists()) {
-                try {
-                    imageFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    + "Ewu"
+                    + File.separator;
+            boolean hasDir = true;
+            File dir = new File(dirPath);
+            if (!dir.exists()) {
+                hasDir = dir.mkdirs();
+            }
+            if (hasDir) {
+                String imgPath = dirPath + File.separator + System.currentTimeMillis() + ".png";
+                imageFile = new File(imgPath);
+                if (!imageFile.exists()) {
+                    try {
+                        imageFile.createNewFile();
+                        return true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
                 }
             }
-            return true;
+
         }
         return false;
     }
@@ -311,18 +328,12 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
                     if (imageFile.exists()) {
                         LocalImage image = new LocalImage();
                         image.setImagePath(imageFile.getPath());
-                        L.d(TAG, "localImage:" + image);
                         Intent intent = new Intent(this, PublishActivity.class);
                         ArrayList<LocalImage> imageList = new ArrayList<>();
                         imageList.add(image);
                         intent.putParcelableArrayListExtra("images", imageList);
                         startActivity(intent);
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                AlbumActivity.this.finish();
-                            }
-                        }, 300);
+                        AlbumActivity.this.finish();
                     }
                 }
 
