@@ -3,7 +3,6 @@ package com.yliec.ewu.module.publish;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -165,12 +164,8 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
         class AddViewHolder extends RecyclerView.ViewHolder {
 
-            @Bind(R.id.cv_add)
-            CardView mAddButton;
-
             public AddViewHolder(View itemView) {
                 super(itemView);
-                ButterKnife.bind(this, itemView);
                 itemView.setOnClickListener(view -> {
                     if (mUploadImages.size() >= 9) {
                         Toast.makeText(PublishActivity.this, "最多只能选9张图哦", Toast.LENGTH_LONG).show();

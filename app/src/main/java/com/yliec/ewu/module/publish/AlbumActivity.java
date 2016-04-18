@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -199,9 +198,7 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (getItemViewType(position) == 0) {
-                ((CameraHolder) holder).mCameraButton.setOnClickListener(v -> openCamera());
-            } else {
+            if (getItemViewType(position) != 0) {
                 AlbumHolder h = (AlbumHolder) holder;
                 Uri uri = Uri.parse("file://" + mPhotos.get(position).getImagePath());
                 int width = Util.dip2px(AlbumActivity.this, 130);
@@ -279,12 +276,9 @@ public class AlbumActivity extends BaseActivity<AlbumPresenter> implements View.
 
         class CameraHolder extends RecyclerView.ViewHolder {
 
-            @Bind(R.id.ib_camera)
-            ImageButton mCameraButton;
-
             public CameraHolder(View itemView) {
                 super(itemView);
-                ButterKnife.bind(this, itemView);
+                itemView.setOnClickListener(v -> openCamera());
             }
         }
     }
