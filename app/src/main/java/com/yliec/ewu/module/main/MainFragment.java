@@ -114,14 +114,7 @@ public class MainFragment extends BaseFragment<MainPresenter> {
                 getPresenter().loadMore(sortType);
             }
         });
-        mActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 发布商品
-//                openCamera();
-                toAlbumActivity();
-            }
-        });
+        mActionButton.setOnClickListener(v -> toAlbumActivity());
         lazyLoad();
     }
 
