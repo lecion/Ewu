@@ -33,7 +33,11 @@
             android:label="@string/activity_album"
             android:parentActivityName=".module.main.MainActivity">
         </activity>
-        <activity android:name=".module.publish.PublishActivity">
+        <activity
+            android:name=".module.publish.PublishActivity"
+            android:label="@string/activity_publish"
+            android:parentActivityName=".module.main.MainActivity"
+            >
         </activity>
     </application>
 
