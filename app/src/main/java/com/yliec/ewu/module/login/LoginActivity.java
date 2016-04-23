@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.yliec.ewu.R;
 
+import nucleus.factory.RequiresPresenter;
+
+@RequiresPresenter(LoginPresenter.class)
 public class LoginActivity extends AppCompatActivity {
 
     @Override
