@@ -15,4 +15,6 @@
     <string name="publish_category">分类</string>
     <string name="activity_publish">发布</string>
     <string name="add_images">添加图片</string>
+    <string name="input_username">请输入用户名</string>
+    <string name="login">登陆</string>
 </resources>

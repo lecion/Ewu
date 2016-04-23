@@ -1,5 +1,6 @@
 package com.yliec.ewu.module.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -8,15 +9,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.yliec.ewu.R;
 import com.yliec.ewu.app.base.BaseActivity;
+import com.yliec.ewu.module.login.LoginActivity;
 import com.yliec.ewu.net.QN;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+
     @Bind(R.id.drawer)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.nv_menu)
@@ -24,6 +28,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Bind(R.id.content)
     FrameLayout mContainer;
     private MenuItem mPrevMenuItem;
+    View mHeaderView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //NavigationView
         if (mNavigationView != null) {
             mNavigationView.setNavigationItemSelectedListener(this);
+            mHeaderView = mNavigationView.getHeaderView(0);
+            mHeaderView.setOnClickListener(this);
         }
 
         new QN().upload();
@@ -96,5 +104,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mDrawerLayout.closeDrawers();
         mPrevMenuItem = item;
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mHeaderView) {
+            Intent i = LoginActivity.getCallingIntent(this);
+            startActivity(i);
+        }
     }
 }

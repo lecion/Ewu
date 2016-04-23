@@ -2,6 +2,7 @@ package com.yliec.ewu.di.component;
 
 import com.yliec.ewu.di.module.AppModule;
 import com.yliec.ewu.model.LocalImageModel;
+import com.yliec.ewu.module.login.LoginActivity;
 
 import javax.inject.Singleton;
 
@@ -16,5 +17,6 @@ public interface AppComponent {
 //    void inject(MainFragment mainFragment);
 
 //    void inject(MainActivity mainActivity);
+void inject(LoginActivity loginActivity);
 void inject(LocalImageModel localImageModel);
 }

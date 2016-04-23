@@ -9,7 +9,7 @@ import dagger.Provides;
 /**
  * Created by Lecion on 4/11/16.
  */
-@Module
+@Module(includes = AppModule.class)
 public class ApiModule {
 
     @Provides
