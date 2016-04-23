@@ -36,9 +36,10 @@
         <activity
             android:name=".module.publish.PublishActivity"
             android:label="@string/activity_publish"
-            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".module.main.MainActivity"
-            >
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity android:name=".module.login.LoginActivity">
         </activity>
     </application>
 

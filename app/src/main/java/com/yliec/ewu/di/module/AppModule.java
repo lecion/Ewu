@@ -1,8 +1,12 @@
 package com.yliec.ewu.di.module;
 
+import android.accounts.AccountManager;
 import android.content.ContentResolver;
+import android.content.Context;
 
 import com.yliec.ewu.app.App;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,12 +23,19 @@ public class AppModule {
     }
 
     @Provides
-    public App provideApplication() {
+    @Singleton
+    public Context provideApplication() {
         return mApp;
     }
 
     @Provides
     public ContentResolver provideContentProvider() {
         return mApp.getContentResolver();
+    }
+
+    @Provides
+    @Singleton
+    public AccountManager provideAccountManager(Context context) {
+        return AccountManager.get(context);
     }
 }

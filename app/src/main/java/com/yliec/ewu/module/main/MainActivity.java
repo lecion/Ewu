@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import com.yliec.ewu.R;
 import com.yliec.ewu.app.base.BaseActivity;
+import com.yliec.ewu.net.QN;
 
 import butterknife.Bind;
 
@@ -38,6 +39,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (mNavigationView != null) {
             mNavigationView.setNavigationItemSelectedListener(this);
         }
+
+        new QN().upload();
 
     }
 

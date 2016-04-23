@@ -48,4 +48,9 @@ public class NetworkTest {
     public void testGetUserInfoRx() throws Exception {
         api.getUserInfoRx("lecion");
     }
+
+    @Test
+    public void testQiniuUpload() {
+        api.uploadQiniu();
+    }
 }
