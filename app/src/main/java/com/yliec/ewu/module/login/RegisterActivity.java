@@ -1,6 +1,5 @@
 package com.yliec.ewu.module.login;
 
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,15 +7,10 @@ import android.os.Bundle;
 import com.yliec.ewu.R;
 import com.yliec.ewu.app.base.BaseActivity;
 
-import javax.inject.Inject;
-
 import nucleus.factory.RequiresPresenter;
 
-@RequiresPresenter(LoginPresenter.class)
-public class LoginActivity extends BaseActivity<LoginPresenter> {
-
-    @Inject
-    AccountManager mAccountManager;
+@RequiresPresenter(RegisterPresenter.class)
+public class RegisterActivity extends BaseActivity<RegisterPresenter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,17 +19,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_login;
+        return R.layout.activity_register;
     }
 
     @Override
     protected void injectPrensenter() {
-        getAppComponent().inject(this);
-        getApiComponent().inject(getPresenter());
     }
 
     public static Intent getCallingIntent(Context context) {
-        return new Intent(context, LoginActivity.class);
+        return new Intent(context, RegisterActivity.class);
     }
-
 }

@@ -17,4 +17,6 @@
     <string name="add_images">添加图片</string>
     <string name="input_username">请输入用户名</string>
     <string name="login">登陆</string>
+    <string name="input_password">请输入密码</string>
+    <string name="register">注册</string>
 </resources>

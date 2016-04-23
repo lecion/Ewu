@@ -8,31 +8,7 @@
     android:orientation="vertical"
     tools:context="com.yliec.ewu.module.publish.PublishActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:fitsSystemWindows="true"
-        android:minHeight="?attr/actionBarSize"
-        app:layout_scrollFlags="enterAlways"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="@string/register"
-            android:textColor="@color/md_white_1000"
-            android:textSize="18sp"
-            android:background="@android:color/transparent"
-            />
-    </android.support.v7.widget.Toolbar>
+    <include layout="@layout/common_toolbar"/>
 
     <EditText
         android:id="@+id/et_username"
@@ -63,7 +39,7 @@
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login"
+        android:text="@string/register"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="20sp"

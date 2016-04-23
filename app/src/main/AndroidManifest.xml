@@ -45,6 +45,13 @@
             android:parentActivityName=".module.main.MainActivity"
             >
         </activity>
+
+        <activity
+            android:name=".module.login.RegisterActivity"
+            android:label="@string/login"
+            android:parentActivityName=".module.main.MainActivity"
+            >
+        </activity>
     </application>
 
 </manifest>
