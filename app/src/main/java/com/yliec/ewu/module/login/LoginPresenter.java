@@ -1,7 +1,6 @@
 package com.yliec.ewu.module.login;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.Toast;
 
 import com.yliec.ewu.api.entity.TokenEntity;
@@ -30,8 +29,6 @@ public class LoginPresenter extends RxPresenter<LoginActivity> {
 
     @Inject
     AuthModel mAuthModel;
-
-    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedState) {
