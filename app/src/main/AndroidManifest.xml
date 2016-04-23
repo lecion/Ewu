@@ -48,7 +48,7 @@
 
         <activity
             android:name=".module.login.RegisterActivity"
-            android:label="@string/login"
+            android:label="@string/register"
             android:parentActivityName=".module.main.MainActivity"
             >
         </activity>
