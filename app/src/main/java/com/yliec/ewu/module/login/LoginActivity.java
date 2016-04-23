@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.yliec.ewu.R;
 import com.yliec.ewu.app.base.BaseActivity;
@@ -93,5 +94,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
 
     public void hideLoginProgress() {
         mPbLogin.setVisibility(View.INVISIBLE);
+    }
+
+    public void showErrMsg(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }

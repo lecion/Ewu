@@ -1,5 +1,6 @@
 package com.yliec.ewu.di.module;
 
+import com.yliec.ewu.model.AuthModel;
 import com.yliec.ewu.model.GoodsModel;
 import com.yliec.ewu.model.LocalImageModel;
 
@@ -20,5 +21,10 @@ public class ApiModule {
     @Provides
     LocalImageModel provideLocalImageModel() {
         return new LocalImageModel();
+    }
+
+    @Provides
+    AuthModel provideAuthModel() {
+        return new AuthModel();
     }
 }
