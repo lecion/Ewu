@@ -61,4 +61,8 @@ public class App extends Application {
         return mPrefser.get(C.PRE_IS_LOGIN, Boolean.class, false);
     }
 
+    public void logout() {
+        mPrefser.remove(C.PRE_IS_LOGIN);
+        mPrefser.remove(C.PRE_TOKEN);
+    }
 }

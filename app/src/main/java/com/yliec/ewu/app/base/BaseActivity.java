@@ -74,10 +74,14 @@ public abstract class BaseActivity<PresenterType extends Presenter> extends Nucl
     }
 
     protected AppComponent getAppComponent() {
-        return ((App) (getApplication())).getAppComponent();
+        return getApp().getAppComponent();
     }
 
     protected ApiComponent getApiComponent() {
-        return ((App) (getApplication())).getApiComponent();
+        return getApp().getApiComponent();
+    }
+
+    protected App getApp() {
+        return (App) getApplication();
     }
 }
