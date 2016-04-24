@@ -9,7 +9,6 @@ import com.yliec.ewu.api.entity.UserEntity;
 import com.yliec.ewu.api.entity.element.AuthUser;
 import com.yliec.ewu.api.entity.element.User;
 import com.yliec.ewu.net.Network;
-import com.yliec.ewu.net.QN;
 
 import java.io.IOException;
 
@@ -101,6 +100,6 @@ public class ApiHub {
     }
 
     public void uploadQiniu() {
-        new QN().upload();
+//        new QN().upload();
     }
 }

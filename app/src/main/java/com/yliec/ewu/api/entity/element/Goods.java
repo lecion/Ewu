@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lecion on 11/30/15.
@@ -32,7 +33,7 @@ public class Goods implements Parcelable {
     private Category category;
 
     @SerializedName("pictures")
-    private ArrayList<Picture> pictures;
+    private List<String> pictures;
 
     private int status;
 
@@ -174,11 +175,11 @@ public class Goods implements Parcelable {
         this.user = user;
     }
 
-    public ArrayList<Picture> getPictures() {
+    public List<String> getPictures() {
         return pictures;
     }
 
-    public void setPictures(ArrayList<Picture> pictures) {
+    public void setPictures(ArrayList<String> pictures) {
         this.pictures = pictures;
     }
 }

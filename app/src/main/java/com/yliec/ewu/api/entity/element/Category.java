@@ -22,6 +22,8 @@ public class Category implements Parcelable {
         name = in.readString();
     }
 
+    public Category() {}
+
     public static final Creator<Category> CREATOR = new Creator<Category>() {
         @Override
         public Category createFromParcel(Parcel in) {

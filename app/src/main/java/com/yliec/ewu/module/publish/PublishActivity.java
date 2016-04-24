@@ -17,12 +17,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.utils.StringUtils;
 import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.LocalImage;
+import com.yliec.ewu.api.entity.element.PostGoods;
 import com.yliec.ewu.app.base.BaseActivity;
+import com.yliec.ewu.net.QN;
 import com.yliec.lsword.compat.util.L;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -65,8 +74,12 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
 
 
     ArrayList<LocalImage> mUploadImages = new ArrayList<>();
+
+    //已经上传到七牛的映射，key为mUploadImages原始文件名，value为七牛返回的hash
+    HashMap<String, String> mUploadedImages = new HashMap<>();
     LocalImage mAddBtn = new LocalImage();
 
+    QN mQN = new QN();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +94,21 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
             mUploadImages.addAll(images);
             if (images.size() > 0) {
                 for (LocalImage image : images) {
+                    //TODO 得到一张图片上传一张到七牛，至于最后是否添加至业务服务器，取决于 mUploadImages 中的结果
                     L.d(TAG, Uri.parse("file://" + image.getImagePath()).toString());
+                    mQN.upload(image.getImagePath(), null, new UpCompletionHandler() {
+                        @Override
+                        public void complete(String key, ResponseInfo info, JSONObject response) {
+                            if (info.isOK()) {
+                                L.d(TAG, " upload complete key: " + key + "  response " + response + "\n info: " + info);
+                                try {
+                                    mUploadedImages.put(image.getImagePath(), response.getString("hash"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
                 }
             }
         }
@@ -101,7 +128,7 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
 
     @Override
     protected void injectPrensenter() {
-
+        getApiComponent().inject(getPresenter());
     }
 
     @Override
@@ -127,7 +154,23 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
                 }
                 //TODO 验证所有字段
                 if (validate) {
-                    getPresenter().publish();
+                    PostGoods goods = new PostGoods();
+                    goods.setName(title);
+                    goods.setDetail(description);
+                    goods.setPrice(Float.parseFloat(price));
+                    //TODO 获取分类列表
+                    goods.setCategory("56f67b256dd167b26ff9b524");
+                    ArrayList<String> pictures = new ArrayList<>();
+                    for (LocalImage image : mUploadImages) {
+                        String url = mUploadedImages.get(image.getImagePath());
+                        if (!StringUtils.isNullOrEmpty(url)) {
+                            pictures.add(url);
+                        }
+
+                    }
+                    goods.setPictures(pictures);
+
+                    getPresenter().publish(goods);
                 }
                 break;
         }

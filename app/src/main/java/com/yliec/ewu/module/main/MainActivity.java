@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.yliec.ewu.R;
 import com.yliec.ewu.app.base.BaseActivity;
 import com.yliec.ewu.module.login.LoginActivity;
-import com.yliec.ewu.net.QN;
 
 import butterknife.Bind;
 
@@ -49,10 +48,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             mHeaderView.setOnClickListener(this);
         }
 
-        new QN().upload();
-
         initView();
-
     }
 
     private void initView() {

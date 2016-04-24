@@ -6,4 +6,6 @@ package com.yliec.ewu.app.common;
 public class C {
     public static final String PRE_IS_LOGIN = "is_login";
     public static final String PRE_TOKEN = "token";
+
+    public static final String QN_HOST = "http://lecion.qiniudn.com/";
 }

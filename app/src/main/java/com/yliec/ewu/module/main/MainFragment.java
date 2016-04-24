@@ -26,8 +26,8 @@ import com.cjj.Util;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.Goods;
-import com.yliec.ewu.api.entity.element.Picture;
 import com.yliec.ewu.app.base.BaseFragment;
+import com.yliec.ewu.app.common.C;
 import com.yliec.ewu.module.login.LoginActivity;
 import com.yliec.ewu.module.publish.AlbumActivity;
 import com.yliec.ewu.net.Api;
@@ -200,9 +200,10 @@ public class MainFragment extends BaseFragment<MainPresenter> {
             //有图
             if (goods.getPictures() != null && goods.getPictures().size() > 0) {
                 holder.llContainer.removeAllViews();
-                for (Picture pic : goods.getPictures()) {
+                for (String pic : goods.getPictures()) {
                     LDraweeView draweeView = new LDraweeView(getContext());
-                    draweeView.setDraweeViewUrl(pic.getUrl());
+                    String url = C.QN_HOST + pic;
+                    draweeView.setDraweeViewUrl(url);
                     holder.llContainer.addView(draweeView, params);
                 }
             } else {

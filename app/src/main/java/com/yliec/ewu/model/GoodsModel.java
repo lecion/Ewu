@@ -2,6 +2,8 @@ package com.yliec.ewu.model;
 
 import com.yliec.ewu.api.GoodsApi;
 import com.yliec.ewu.api.entity.GoodsEntity;
+import com.yliec.ewu.api.entity.ResEntity;
+import com.yliec.ewu.api.entity.element.PostGoods;
 import com.yliec.ewu.app.base.BaseModel;
 import com.yliec.ewu.net.Api;
 
@@ -34,5 +36,9 @@ public class GoodsModel extends BaseModel<GoodsApi, GoodsModel> {
 
     public Observable<GoodsEntity.AGoods> getGoodsById(String id) {
         return getService().getGoods(id);
+    }
+
+    public Observable<ResEntity> addGoods(PostGoods goods) {
+        return getService().addGoods(goods);
     }
 }

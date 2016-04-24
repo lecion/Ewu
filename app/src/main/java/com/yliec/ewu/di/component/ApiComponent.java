@@ -4,6 +4,7 @@ import com.yliec.ewu.di.module.ApiModule;
 import com.yliec.ewu.module.login.LoginPresenter;
 import com.yliec.ewu.module.main.MainPresenter;
 import com.yliec.ewu.module.publish.AlbumPresenter;
+import com.yliec.ewu.module.publish.PublishPresenter;
 
 import javax.inject.Singleton;
 
@@ -20,4 +21,6 @@ public interface ApiComponent {
     void inject(AlbumPresenter albumPresenter);
 
     void inject(LoginPresenter loginPresenter);
+
+    void inject(PublishPresenter publishPresenter);
 }
