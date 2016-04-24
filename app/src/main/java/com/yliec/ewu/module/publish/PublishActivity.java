@@ -153,7 +153,7 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
                     validate = false;
                 }
 
-                if (mUploadImages.size() == 0) {
+                if (mUploadImages.size() <= 1) {
                     Toast.makeText(this, "请选择最少一张图片", Toast.LENGTH_LONG).show();
                     validate = false;
                 }
