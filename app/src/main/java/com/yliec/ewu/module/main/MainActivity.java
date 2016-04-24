@@ -11,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.yliec.ewu.R;
+import com.yliec.ewu.app.App;
 import com.yliec.ewu.app.base.BaseActivity;
 import com.yliec.ewu.module.login.LoginActivity;
 import com.yliec.ewu.net.QN;
@@ -109,8 +111,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onClick(View v) {
         if (v == mHeaderView) {
-            Intent i = LoginActivity.getCallingIntent(this);
-            startActivity(i);
+            if (((App) getApplication()).isLogin()) {
+                Toast.makeText(this, "个人信息", Toast.LENGTH_LONG).show();
+            } else {
+                Intent i = LoginActivity.getCallingIntent(this);
+                startActivity(i);
+            }
         }
     }
 }

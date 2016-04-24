@@ -18,6 +18,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by Lecion on 11/30/15.
@@ -90,16 +91,13 @@ public class ApiHub {
 
     public void getToken(AuthUser user) {
         AuthApi authApi = Network.retrofit.create(AuthApi.class);
-        Call<TokenEntity> call = authApi.getToken(user);
-        try {
-            Response response = call.execute();
-            TokenEntity tokenEntity = (TokenEntity) response.body();
-
-            System.out.println(tokenEntity.getData().getToken());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Observable<TokenEntity> observable = authApi.getToken(user);
+        observable.subscribe(new Action1<TokenEntity>() {
+            @Override
+            public void call(TokenEntity tokenEntity) {
+                System.out.println(tokenEntity.getData().getToken());
+            }
+        });
     }
 
     public void uploadQiniu() {

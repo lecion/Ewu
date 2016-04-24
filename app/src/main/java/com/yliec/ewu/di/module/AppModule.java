@@ -1,9 +1,9 @@
 package com.yliec.ewu.di.module;
 
-import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 
+import com.github.pwittchen.prefser.library.Prefser;
 import com.yliec.ewu.app.App;
 
 import javax.inject.Singleton;
@@ -33,9 +33,9 @@ public class AppModule {
         return mApp.getContentResolver();
     }
 
-    @Provides
     @Singleton
-    public AccountManager provideAccountManager(Context context) {
-        return AccountManager.get(context);
+    @Provides
+    public Prefser providerPrefser(Context context) {
+        return new Prefser(context);
     }
 }

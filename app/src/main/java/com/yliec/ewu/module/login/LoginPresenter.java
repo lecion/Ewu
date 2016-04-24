@@ -3,7 +3,9 @@ package com.yliec.ewu.module.login;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.github.pwittchen.prefser.library.Prefser;
 import com.yliec.ewu.api.entity.TokenEntity;
+import com.yliec.ewu.app.common.C;
 import com.yliec.ewu.app.common.SchedulerTransformer;
 import com.yliec.ewu.model.AuthModel;
 import com.yliec.lsword.compat.util.L;
@@ -11,7 +13,6 @@ import com.yliec.lsword.compat.util.L;
 import javax.inject.Inject;
 
 import nucleus.presenter.RxPresenter;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action2;
 import rx.schedulers.Schedulers;
 
@@ -30,14 +31,15 @@ public class LoginPresenter extends RxPresenter<LoginActivity> {
     @Inject
     AuthModel mAuthModel;
 
+    @Inject
+    Prefser mPrefser;
+
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
         restartableLatestCache(REQUEST_TOKEN,
                 () -> mAuthModel.getToken(mUsername, mPassword)
                         .subscribeOn(Schedulers.io())
-                        .doOnSubscribe(() -> getView().showLoginProgress())
-                        .subscribeOn(AndroidSchedulers.mainThread())
                         .compose(new SchedulerTransformer<>()),
                 new Action2<LoginActivity, TokenEntity>() {
                     @Override
@@ -48,17 +50,17 @@ public class LoginPresenter extends RxPresenter<LoginActivity> {
                             // 错误
                             loginActivity.showErrMsg(tokenEntity.getStatus().getMsg());
                         } else {
-                            //TODO 登陆成功处理Token
-                            Toast.makeText(loginActivity, "成功", Toast.LENGTH_LONG).show();
+                            loginActivity.loginSuccess();
+                            mPrefser.put(C.PRE_IS_LOGIN, true);
+                            mPrefser.put(C.PRE_TOKEN, tokenEntity.getData().getToken());
                         }
-                        loginActivity.hideLoginProgress();
                     }
                 }, new Action2<LoginActivity, Throwable>() {
                     @Override
                     public void call(LoginActivity loginActivity, Throwable throwable) {
                         Toast.makeText(loginActivity, "获取token失败 ", Toast.LENGTH_LONG).show();
                         L.d(TAG, "error: " + throwable);
-                        loginActivity.hideLoginProgress();
+
                         loginActivity.showErrMsg("登录失败，请检查网络连接");
                     }
                 });

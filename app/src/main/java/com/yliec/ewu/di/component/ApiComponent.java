@@ -5,11 +5,14 @@ import com.yliec.ewu.module.login.LoginPresenter;
 import com.yliec.ewu.module.main.MainPresenter;
 import com.yliec.ewu.module.publish.AlbumPresenter;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
  * Created by Lecion on 4/12/16.
  */
+@Singleton
 @Component(modules = ApiModule.class)
 public interface ApiComponent {
     void inject(MainPresenter mainPresenter);

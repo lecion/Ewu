@@ -1,6 +1,5 @@
 package com.yliec.ewu.module.login;
 
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +12,6 @@ import android.widget.Toast;
 
 import com.yliec.ewu.R;
 import com.yliec.ewu.app.base.BaseActivity;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -37,9 +34,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
 
     @Bind(R.id.pb_login)
     ProgressBar mPbLogin;
-
-    @Inject
-    AccountManager mAccountManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,15 +82,22 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         }
     }
 
-    public void showLoginProgress() {
+    private void showLoginProgress() {
         mPbLogin.setVisibility(View.VISIBLE);
     }
 
-    public void hideLoginProgress() {
+    private void hideLoginProgress() {
         mPbLogin.setVisibility(View.INVISIBLE);
     }
 
     public void showErrMsg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        hideLoginProgress();
+    }
+
+    public void loginSuccess() {
+        Toast.makeText(this, "登陆成功", Toast.LENGTH_LONG).show();
+        hideLoginProgress();
+        finish();
     }
 }
