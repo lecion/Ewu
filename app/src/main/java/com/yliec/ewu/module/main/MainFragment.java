@@ -28,6 +28,7 @@ import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.Goods;
 import com.yliec.ewu.api.entity.element.Picture;
 import com.yliec.ewu.app.base.BaseFragment;
+import com.yliec.ewu.module.login.LoginActivity;
 import com.yliec.ewu.module.publish.AlbumActivity;
 import com.yliec.ewu.net.Api;
 import com.yliec.ewu.widget.LDraweeView;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
 
@@ -114,13 +116,18 @@ public class MainFragment extends BaseFragment<MainPresenter> {
                 getPresenter().loadMore(sortType);
             }
         });
-        mActionButton.setOnClickListener(v -> toAlbumActivity());
         lazyLoad();
     }
 
-    private void toAlbumActivity() {
-        Intent intent = new Intent(getActivity(), AlbumActivity.class);
-        startActivity(intent);
+    @OnClick(R.id.fab_publish)
+    public void toAlbumActivity() {
+        if (getApp().isLogin()) {
+            Intent intent = new Intent(getActivity(), AlbumActivity.class);
+            startActivity(intent);
+        } else {
+            Intent i = LoginActivity.getCallingIntent(getActivity());
+            startActivity(i);
+        }
     }
 
     /**

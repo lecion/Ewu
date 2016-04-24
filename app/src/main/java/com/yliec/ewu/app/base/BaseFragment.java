@@ -109,8 +109,11 @@ public abstract class BaseFragment<PresenterType extends Presenter> extends Nucl
     protected abstract String getTitle();
 
     protected ApiComponent getApiComponent() {
-        return ((App) (getActivity().getApplication())).getApiComponent();
+        return getApp().getApiComponent();
     }
 
+    protected App getApp() {
+        return (App)getActivity().getApplication();
+    }
 
 }

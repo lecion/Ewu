@@ -6,7 +6,6 @@ import android.content.Context;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.github.pwittchen.prefser.library.Prefser;
 import com.yliec.ewu.app.common.C;
-import com.yliec.ewu.app.common.SchedulerTransformer;
 import com.yliec.ewu.di.component.ApiComponent;
 import com.yliec.ewu.di.component.AppComponent;
 import com.yliec.ewu.di.component.DaggerApiComponent;
@@ -22,8 +21,6 @@ import javax.inject.Inject;
 public class App extends Application {
     private AppComponent mAppComponent;
     private ApiComponent mApiComponent;
-    private boolean isLogin = false;
-    private String mToken;
     @Inject
     Prefser mPrefser;
     @Override
@@ -32,14 +29,6 @@ public class App extends Application {
         Fresco.initialize(getApplicationContext());
         setupComponent();
         getAppComponent().inject(this);
-
-        mPrefser.getAndObserve(C.PRE_IS_LOGIN, Boolean.class, false).compose(new SchedulerTransformer<>()).subscribe(isLogin -> {
-            this.isLogin = isLogin;
-        });
-
-        mPrefser.getAndObserve(C.PRE_TOKEN, String.class, null).compose(new SchedulerTransformer<>()).subscribe(token -> {
-            mToken = token;
-        });
     }
 
     private void setupComponent() {
@@ -62,11 +51,14 @@ public class App extends Application {
     }
 
     public String getToken() {
-        return mToken;
+        if (isLogin()) {
+            return mPrefser.get(C.PRE_TOKEN, String.class, null);
+        }
+        return null;
     }
 
     public boolean isLogin() {
-        return isLogin;
+        return mPrefser.get(C.PRE_IS_LOGIN, Boolean.class, false);
     }
 
     public void logout() {
