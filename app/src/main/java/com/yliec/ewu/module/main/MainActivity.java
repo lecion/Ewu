@@ -51,6 +51,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         new QN().upload();
 
+        initView();
+
+    }
+
+    private void initView() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        MainFragment fragment = new MainFragment();
+//                transaction.replace(mContainer.getId(),  fragment, "main");
+        transaction.add(mContainer.getId(), fragment, "main");
+        transaction.hide(fragment);
+        transaction.show(fragment);
+        transaction.commit();
+        fm.executePendingTransactions();
     }
 
     @Override

@@ -87,7 +87,7 @@ public class MainFragment extends BaseFragment<MainPresenter> {
 
     @Override
     protected String getTitle() {
-        return "测试";
+        return "易物";
     }
 
     @Override
@@ -127,7 +127,8 @@ public class MainFragment extends BaseFragment<MainPresenter> {
      * 等待视图创建完毕后加载数据
      */
     private void lazyLoad() {
-//            mRefreshLayout.autoRefresh();
+//        mRefreshLayout.autoRefresh();
+//        new Handler().postDelayed(() -> mRefreshLayout.autoRefresh(), 200);
     }
 
     public void onChangeItems(List<Goods> goodsList, int pageIndex) {
