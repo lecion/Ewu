@@ -152,6 +152,11 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
                     mEtPrice.setError("请填写价格");
                     validate = false;
                 }
+
+                if (mUploadImages.size() == 0) {
+                    Toast.makeText(this, "请选择最少一张图片", Toast.LENGTH_LONG).show();
+                    validate = false;
+                }
                 //TODO 验证所有字段
                 if (validate) {
                     PostGoods goods = new PostGoods();
