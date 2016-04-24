@@ -192,6 +192,10 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
         }
     }
 
+    public void showErrMsg(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+    }
+
     class UploadImagesAdapter extends RecyclerView.Adapter {
 
 
