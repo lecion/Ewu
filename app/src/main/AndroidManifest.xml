@@ -50,7 +50,11 @@
             android:label="@string/register"
             android:parentActivityName=".module.main.MainActivity">
         </activity>
-        <activity android:name=".module.detail.DetailActivity">
+        <activity
+            android:name=".module.detail.DetailActivity"
+            android:label="@string/detail"
+            android:parentActivityName=".module.main.MainActivity"
+            >
         </activity>
     </application>
 
