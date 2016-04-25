@@ -29,6 +29,12 @@ public class AppModule {
     }
 
     @Provides
+    @Singleton
+    public App provdeApp() {
+        return mApp;
+    }
+
+    @Provides
     public ContentResolver provideContentProvider() {
         return mApp.getContentResolver();
     }

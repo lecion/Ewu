@@ -40,5 +40,6 @@ public class GoodsModel extends BaseModel<GoodsApi, GoodsModel> {
 
     public Observable<ResEntity> addGoods(PostGoods goods) {
         return getService().addGoods(goods);
+//        return getService().addGoods(goods);
     }
 }
