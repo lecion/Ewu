@@ -1,6 +1,7 @@
 package com.yliec.ewu.di.component;
 
 import com.yliec.ewu.di.module.ApiModule;
+import com.yliec.ewu.module.detail.DetailPresenter;
 import com.yliec.ewu.module.login.LoginPresenter;
 import com.yliec.ewu.module.main.MainPresenter;
 import com.yliec.ewu.module.publish.AlbumPresenter;
@@ -23,4 +24,6 @@ public interface ApiComponent {
     void inject(LoginPresenter loginPresenter);
 
     void inject(PublishPresenter publishPresenter);
+
+    void inject(DetailPresenter DetailPresenter);
 }
