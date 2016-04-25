@@ -38,10 +38,12 @@ public class PublishPresenter extends BasePresenter<PublishActivity> {
                 , (publishActivity, resEntity) -> {
                     Toast.makeText(publishActivity, "成功", Toast.LENGTH_LONG).show();
                     if (resEntity.getStatus().getCode() != 0) {
-                        //跳转到商品详情页
                         L.d(TAG, "code : " + resEntity.getStatus().getCode() + " msg: " + resEntity.getStatus().getMsg());
+
                     } else {
+                        //跳转到商品详情页
                         L.d(TAG, "GOodsId " + resEntity.getData().getId());
+                        publishActivity.toDetailActivity(resEntity.getData().getId());
                     }
 
                 }, (publishActivity, throwable) -> {

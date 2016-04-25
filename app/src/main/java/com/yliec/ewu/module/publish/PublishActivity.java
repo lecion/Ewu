@@ -24,6 +24,7 @@ import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.LocalImage;
 import com.yliec.ewu.api.entity.element.PostGoods;
 import com.yliec.ewu.app.base.BaseActivity;
+import com.yliec.ewu.module.detail.DetailActivity;
 import com.yliec.ewu.net.QN;
 import com.yliec.lsword.compat.util.L;
 
@@ -94,7 +95,6 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
             mUploadImages.addAll(images);
             if (images.size() > 0) {
                 for (LocalImage image : images) {
-                    //TODO 得到一张图片上传一张到七牛，至于最后是否添加至业务服务器，取决于 mUploadImages 中的结果
                     L.d(TAG, Uri.parse("file://" + image.getImagePath()).toString());
                     mQN.upload(image.getImagePath(), null, new UpCompletionHandler() {
                         @Override
@@ -199,6 +199,13 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements V
 
     public void showErrMsg(String s) {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+    }
+
+    public void toDetailActivity(String id) {
+        Intent i = DetailActivity.getCallingIntent(this);
+        i.putExtra(DetailActivity.GOODS_ID, id);
+        startActivity(i);
+        finish();
     }
 
     class UploadImagesAdapter extends RecyclerView.Adapter {

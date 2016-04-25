@@ -75,7 +75,6 @@
                 android:textColor="@color/md_black_1000"
                 android:text="详细"
                 android:layout_below="@id/tv_price"
-                android:layout_alignLeft="@id/ll_pictures_container"
                 android:layout_marginBottom="8dp"
                 />
 
