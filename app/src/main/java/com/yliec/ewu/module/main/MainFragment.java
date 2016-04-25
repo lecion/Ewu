@@ -28,6 +28,7 @@ import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.Goods;
 import com.yliec.ewu.app.base.BaseFragment;
 import com.yliec.ewu.app.common.C;
+import com.yliec.ewu.module.detail.DetailActivity;
 import com.yliec.ewu.module.login.LoginActivity;
 import com.yliec.ewu.module.publish.AlbumActivity;
 import com.yliec.ewu.net.Api;
@@ -247,8 +248,18 @@ public class MainFragment extends BaseFragment<MainPresenter> {
             public MainHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
+                itemView.setOnClickListener(v -> {
+                    String id = mDatas.get(getAdapterPosition()).getId();
+                    toDetailActivity(id);
+                });
             }
         }
+    }
+
+    private void toDetailActivity(String id) {
+        Intent i = DetailActivity.getCallingIntent(getActivity());
+        i.putExtra(DetailActivity.GOODS_ID, id);
+        startActivity(i);
     }
 
     @Override
