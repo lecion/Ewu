@@ -43,15 +43,14 @@
         <activity
             android:name=".module.login.LoginActivity"
             android:label="@string/login"
-            android:parentActivityName=".module.main.MainActivity"
-            >
+            android:parentActivityName=".module.main.MainActivity">
         </activity>
-
         <activity
             android:name=".module.login.RegisterActivity"
             android:label="@string/register"
-            android:parentActivityName=".module.main.MainActivity"
-            >
+            android:parentActivityName=".module.main.MainActivity">
+        </activity>
+        <activity android:name=".module.detail.DetailActivity">
         </activity>
     </application>
 
