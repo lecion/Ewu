@@ -10,7 +10,6 @@
     tools:context="com.yliec.ewu.module.detail.DetailActivity">
 
     <include layout="@layout/common_toolbar"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +17,13 @@
         >
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/pb_load"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
             <!--商品信息start-->
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/iv_avatar"
@@ -36,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="16sp"
-                android:text="用户名"
                 android:layout_toRightOf="@id/iv_avatar"
                 android:layout_alignTop="@id/iv_avatar"
                 android:layout_marginLeft="8dp"
@@ -48,7 +52,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="14sp"
-                android:text="2天前"
                 android:layout_below="@id/tv_username"
                 android:layout_alignBottom="@id/iv_avatar"
                 android:layout_alignLeft="@id/tv_username"
@@ -61,7 +64,6 @@
                 android:gravity="right"
                 android:textSize="16sp"
                 android:textColor="@color/md_red_400"
-                android:text="￥120"
                 android:layout_margin="8dp"
                 android:layout_alignParentRight="true"
                 />
@@ -70,10 +72,8 @@
                 android:id="@+id/tv_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:textSize="16sp"
                 android:textColor="@color/md_black_1000"
-                android:text="详细"
                 android:layout_below="@id/tv_price"
                 android:layout_marginBottom="8dp"
                 />

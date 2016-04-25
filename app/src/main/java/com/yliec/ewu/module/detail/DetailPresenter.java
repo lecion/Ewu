@@ -29,6 +29,9 @@ public class DetailPresenter extends RxPresenter<DetailActivity> {
                         .compose(new SchedulerTransformer<>())
                 , (detailActivity, aGoods) -> {
                     L.d(TAG, "response " + aGoods);
+                    if (aGoods.getStatus().getCode() == 0) {
+                        detailActivity.onGoods(aGoods.getData());
+                    }
                 }
                 , (detailActivity1, throwable) -> {
                     L.d(TAG, "err " + throwable.getMessage());
@@ -39,4 +42,5 @@ public class DetailPresenter extends RxPresenter<DetailActivity> {
         mGoodsId = goodsId;
         start(REQUEST_GOODS);
     }
+
 }
