@@ -122,6 +122,9 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
     }
 
     private void addPictures(List<String> pictures) {
+        if (pictures == null) {
+            return;
+        }
         llContainer.removeAllViews();
         for (String pic : pictures) {
             String url = C.QN_HOST + pic;
@@ -138,8 +141,13 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
     }
 
     public void onReply(Reply reply) {
+        Toast.makeText(this, "回复成功", Toast.LENGTH_SHORT).show();
         mReplyList.add(0, reply);
         mReplyAdapter.notifyDataSetChanged();
+        mEtReply.setText("");
+        mEtReply.setHint("回复: ");
+        mToReply = null;
+        hideKeyboard(mEtReply);
     }
 
 
@@ -176,7 +184,11 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
             Reply reply = mReplyList.get(position);
             holder.mUser.setText(reply.getUser().getName());
             holder.mTime.setText(reply.getTime());
-            holder.mContent.setText(reply.getContent());
+            String content = "";
+            if (reply.getToUser() != null) {
+                content += "@" + reply.getToUser().getName() + ": ";
+            }
+            holder.mContent.setText(content + reply.getContent());
         }
 
         @Override
@@ -212,6 +224,11 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
     private void showKeyboard(View v) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     @OnClick(R.id.btn_reply)
