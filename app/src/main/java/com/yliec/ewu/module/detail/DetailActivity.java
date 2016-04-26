@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -18,6 +20,7 @@ import com.yliec.ewu.api.entity.element.Reply;
 import com.yliec.ewu.app.base.BaseActivity;
 import com.yliec.ewu.app.common.C;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -49,11 +52,25 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
     @Bind(R.id.ll_pictures_container)
     LinearLayout llContainer;
 
+    @Bind(R.id.rv_reply)
+    RecyclerView mRvReply;
+
+    private List<Reply> mReplyList;
+
+    private ReplyAdapter mReplyAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handleIntent();
+        initView();
         laodData();
+    }
+
+    private void initView() {
+        mReplyList = new ArrayList<>();
+        mRvReply.setAdapter(mReplyAdapter = new ReplyAdapter());
+
     }
 
     private void laodData() {
@@ -114,6 +131,32 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, DetailActivity.class);
+    }
+
+    class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyHolder> {
+
+
+        @Override
+        public ReplyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ReplyHolder(LayoutInflater.from(DetailActivity.this).inflate(R.layout.item_goods_reply, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(ReplyHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mReplyList.size();
+        }
+
+        class ReplyHolder extends RecyclerView.ViewHolder {
+
+            public ReplyHolder(View itemView) {
+                super(itemView);
+            }
+        }
     }
 
 }
