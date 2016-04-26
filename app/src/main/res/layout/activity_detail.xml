@@ -33,7 +33,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
                 android:padding="8dp"
-                app:roundedCornerRadius="4dp"
+                app:roundAsCircle="true"
                 />
 
             <TextView

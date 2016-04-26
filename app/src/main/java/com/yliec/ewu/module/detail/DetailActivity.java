@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,8 +70,8 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
 
     private void initView() {
         mReplyList = new ArrayList<>();
+        mRvReply.setLayoutManager(new LinearLayoutManager(this));
         mRvReply.setAdapter(mReplyAdapter = new ReplyAdapter());
-
     }
 
     private void laodData() {
@@ -95,7 +96,8 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
     }
 
     private void addReplies(List<Reply> replies) {
-
+        mReplyList.addAll(replies);
+        mReplyAdapter.notifyDataSetChanged();
     }
 
     private void addPictures(List<String> pictures) {
