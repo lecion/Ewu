@@ -17,7 +17,7 @@
         >
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ProgressBar
                 android:id="@+id/pb_load"
@@ -33,6 +33,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
                 android:padding="8dp"
+                app:roundedCornerRadius="4dp"
                 />
 
             <TextView
@@ -98,7 +99,14 @@
             </LinearLayout>
             <!--商品信息end-->
             <!--评论start-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_reply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_pictures_container"
+                >
 
+            </android.support.v7.widget.RecyclerView>
             <!--评论end-->
         </RelativeLayout>
 

@@ -14,6 +14,7 @@ import com.cjj.Util;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.Goods;
+import com.yliec.ewu.api.entity.element.Reply;
 import com.yliec.ewu.app.base.BaseActivity;
 import com.yliec.ewu.app.common.C;
 
@@ -72,6 +73,12 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
         mTvDetail.setText(goods.getDetail());
 
         addPictures(goods.getPictures());
+
+        addReplies(goods.getReplies());
+    }
+
+    private void addReplies(List<Reply> replies) {
+
     }
 
     private void addPictures(List<String> pictures) {

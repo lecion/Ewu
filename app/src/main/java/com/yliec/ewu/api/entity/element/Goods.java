@@ -35,6 +35,8 @@ public class Goods implements Parcelable {
     @SerializedName("pictures")
     private List<String> pictures;
 
+    private List<Reply> replies;
+
     private int status;
 
     private String createdAt;
@@ -161,6 +163,7 @@ public class Goods implements Parcelable {
                 ", user=" + user +
                 ", category=" + category +
                 ", pictures=" + pictures +
+                ", replies=" + replies +
                 ", status=" + status +
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
@@ -181,5 +184,13 @@ public class Goods implements Parcelable {
 
     public void setPictures(ArrayList<String> pictures) {
         this.pictures = pictures;
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 }
