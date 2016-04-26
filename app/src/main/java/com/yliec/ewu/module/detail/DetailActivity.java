@@ -4,19 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cjj.Util;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.qiniu.android.utils.StringUtils;
 import com.yliec.ewu.R;
 import com.yliec.ewu.api.entity.element.Goods;
 import com.yliec.ewu.api.entity.element.Reply;
@@ -28,6 +34,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(DetailPresenter.class)
@@ -62,9 +69,15 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
     @Bind(R.id.et_reply)
     EditText mEtReply;
 
+    @Bind(R.id.btn_reply)
+    Button mBtnReply;
+
     private List<Reply> mReplyList;
 
     private ReplyAdapter mReplyAdapter;
+
+    @Nullable
+    private Reply mToReply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +91,9 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
         mReplyList = new ArrayList<>();
         mRvReply.setLayoutManager(new LinearLayoutManager(this));
         mRvReply.setAdapter(mReplyAdapter = new ReplyAdapter());
+        mEtReply.setOnKeyListener((v, keyCode, event) -> onDelete(keyCode));
     }
+
 
     private void laodData() {
         mPbLoad.setVisibility(View.VISIBLE);
@@ -122,6 +137,12 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
         return view;
     }
 
+    public void onReply(Reply reply) {
+        mReplyList.add(0, reply);
+        mReplyAdapter.notifyDataSetChanged();
+    }
+
+
     private void handleIntent() {
         Intent intent = getIntent();
         mGoodsId = intent.getStringExtra(GOODS_ID);
@@ -140,6 +161,7 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, DetailActivity.class);
     }
+
 
     class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyHolder> {
 
@@ -181,6 +203,7 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
     }
 
     private void replyUser(Reply toReply) {
+        mToReply = toReply;
         mEtReply.setHint("回复 " + toReply.getUser().getName() + " : ");
         mEtReply.requestFocus();
         showKeyboard(mEtReply);
@@ -191,4 +214,24 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
         imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
     }
 
+    @OnClick(R.id.btn_reply)
+    public void sendReply() {
+        String content = mEtReply.getText().toString().trim();
+        if (TextUtils.isEmpty(content)) {
+            Toast.makeText(this, "回复内容不能为空", Toast.LENGTH_LONG).show();
+        } else {
+            getPresenter().reply(content, mToReply);
+        }
+    }
+
+    private boolean onDelete(int keyCode) {
+        String content = mEtReply.getText().toString();
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            if (StringUtils.isNullOrEmpty(content)) {
+                mToReply = null;
+                mEtReply.setHint("回复: ");
+            }
+        }
+        return false;
+    }
 }

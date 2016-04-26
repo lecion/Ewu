@@ -3,6 +3,7 @@ package com.yliec.ewu.di.module;
 import com.yliec.ewu.model.AuthModel;
 import com.yliec.ewu.model.GoodsModel;
 import com.yliec.ewu.model.LocalImageModel;
+import com.yliec.ewu.model.ReplyModel;
 
 import dagger.Module;
 import dagger.Provides;
@@ -26,5 +27,10 @@ public class ApiModule {
     @Provides
     AuthModel provideAuthModel() {
         return new AuthModel();
+    }
+
+    @Provides
+    ReplyModel provideReplyModel() {
+        return new ReplyModel();
     }
 }
