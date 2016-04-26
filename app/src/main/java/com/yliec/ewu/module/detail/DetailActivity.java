@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(DetailPresenter.class)
@@ -55,6 +58,9 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
 
     @Bind(R.id.rv_reply)
     RecyclerView mRvReply;
+
+    @Bind(R.id.et_reply)
+    EditText mEtReply;
 
     private List<Reply> mReplyList;
 
@@ -145,7 +151,10 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
 
         @Override
         public void onBindViewHolder(ReplyHolder holder, int position) {
-
+            Reply reply = mReplyList.get(position);
+            holder.mUser.setText(reply.getUser().getName());
+            holder.mTime.setText(reply.getTime());
+            holder.mContent.setText(reply.getContent());
         }
 
         @Override
@@ -154,11 +163,32 @@ public class DetailActivity extends BaseActivity<DetailPresenter> {
         }
 
         class ReplyHolder extends RecyclerView.ViewHolder {
+            @Bind(R.id.iv_avatar)
+            SimpleDraweeView mAvatar;
+            @Bind(R.id.tv_username)
+            TextView mUser;
+            @Bind(R.id.tv_time)
+            TextView mTime;
+            @Bind(R.id.tv_content)
+            TextView mContent;
 
             public ReplyHolder(View itemView) {
                 super(itemView);
+                ButterKnife.bind(this, itemView);
+                itemView.setOnClickListener(v -> replyUser(mReplyList.get(getAdapterPosition())));
             }
         }
+    }
+
+    private void replyUser(Reply toReply) {
+        mEtReply.setHint("回复 " + toReply.getUser().getName() + " : ");
+        mEtReply.requestFocus();
+        showKeyboard(mEtReply);
+    }
+
+    private void showKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
     }
 
 }

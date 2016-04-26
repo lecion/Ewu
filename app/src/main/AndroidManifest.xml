@@ -54,6 +54,7 @@
             android:name=".module.detail.DetailActivity"
             android:label="@string/detail"
             android:parentActivityName=".module.main.MainActivity"
+            android:windowSoftInputMode="adjustPan"
             >
         </activity>
     </application>

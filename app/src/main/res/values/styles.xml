@@ -10,6 +10,7 @@
         <item name="colorAccent">@color/color_accent</item>
         <item name="android:textColorPrimary">@color/md_grey_500</item>
         <item name="android:actionOverflowButtonStyle">@style/ActionButton</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme"/>

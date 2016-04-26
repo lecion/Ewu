@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
     android:background="@color/md_grey_100"
     android:orientation="vertical"
-    tools:context="com.yliec.ewu.module.detail.DetailActivity">
+    tools:context="com.yliec.ewu.module.detail.DetailActivity"
+    >
 
-    <include layout="@layout/common_toolbar"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/common_toolbar"/>
+
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_marginBottom="56dp"
         android:scrollbars="none"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -29,10 +37,10 @@
                 android:id="@+id/iv_avatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:placeholderImage="@mipmap/avatar"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
                 android:padding="4dp"
+                app:placeholderImage="@mipmap/avatar"
                 app:roundAsCircle="true"
                 />
 
@@ -40,62 +48,62 @@
                 android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="16sp"
-                android:layout_toRightOf="@id/iv_avatar"
                 android:layout_alignTop="@id/iv_avatar"
                 android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/iv_avatar"
+                android:gravity="center"
+                android:textSize="16sp"
                 />
 
             <TextView
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="14sp"
-                android:layout_below="@id/tv_username"
                 android:layout_alignBottom="@id/iv_avatar"
                 android:layout_alignLeft="@id/tv_username"
+                android:layout_below="@id/tv_username"
+                android:gravity="center"
+                android:textSize="14sp"
                 />
 
             <TextView
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:textSize="16sp"
-                android:textColor="@color/md_red_400"
-                android:layout_margin="8dp"
                 android:layout_alignParentRight="true"
+                android:layout_margin="8dp"
+                android:gravity="right"
+                android:textColor="@color/md_red_400"
+                android:textSize="16sp"
                 />
 
             <TextView
                 android:id="@+id/tv_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/md_black_1000"
-                android:layout_below="@id/tv_price"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_alignLeft="@id/iv_avatar"
                 android:layout_alignStart="@id/iv_avatar"
-                android:layout_alignLeft="@id/iv_avatar"/>
+                android:layout_below="@id/tv_price"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/md_black_1000"
+                android:textSize="16sp"/>
 
             <LinearLayout
                 android:id="@+id/ll_pictures_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_below="@id/tv_detail"
+                android:orientation="vertical"
                 >
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/iv_goods"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@mipmap/avatar"
                     android:layout_below="@id/iv_avatar"
                     android:layout_margin="8dp"
+                    android:src="@mipmap/avatar"
                     app:placeholderImage="@drawable/banner"
                     />
             </LinearLayout>
@@ -113,4 +121,29 @@
         </RelativeLayout>
 
     </ScrollView>
-</LinearLayout>
+
+    <EditText
+        android:id="@+id/et_reply"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/md_white_1000"
+        android:hint="回复："
+        android:gravity="left|center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="80dp"
+        />
+
+    <Button
+        android:id="@+id/btn_reply"
+        android:layout_width="72dp"
+        android:layout_height="48dp"
+        android:background="@drawable/selector_login_btn"
+        android:textColor="@color/md_white_1000"
+        android:text="发送"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="4dp"
+        />
+</RelativeLayout>
