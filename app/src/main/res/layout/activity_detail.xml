@@ -32,7 +32,7 @@
                 app:placeholderImage="@mipmap/avatar"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
-                android:padding="8dp"
+                android:padding="4dp"
                 app:roundAsCircle="true"
                 />
 
@@ -76,8 +76,10 @@
                 android:textSize="16sp"
                 android:textColor="@color/md_black_1000"
                 android:layout_below="@id/tv_price"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                />
+                android:layout_alignStart="@id/iv_avatar"
+                android:layout_alignLeft="@id/iv_avatar"/>
 
             <LinearLayout
                 android:id="@+id/ll_pictures_container"
